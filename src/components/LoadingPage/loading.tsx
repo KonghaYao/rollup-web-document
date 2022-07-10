@@ -1,11 +1,5 @@
 import { Component, createSignal, mergeProps, onCleanup } from "solid-js";
-import { getAssets } from "../../utils/getAssets";
-const SpinnerNames: string[] = await getAssets(
-    "./assets/spinnerName.json",
-    "json"
-);
-const sample = (list: string[]) =>
-    list[Math.floor(Math.random() * list.length)];
+
 export const Loading: Component<{
     message?: string;
     spinner?: string;
@@ -13,7 +7,7 @@ export const Loading: Component<{
     props = mergeProps(
         {
             message: "加载中。。。",
-            spinner: sample(SpinnerNames),
+            spinner: "atom-spinner",
         },
         props
     );

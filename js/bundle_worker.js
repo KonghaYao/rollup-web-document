@@ -46,7 +46,9 @@ const CDN = globalThis.location.origin + "/";
 const RollupConfig = {
     plugins: [
         mdx({
-            jsxImportSource: "solid-jsx",
+            options: {
+                jsxImportSource: "solid-jsx",
+            },
         }),
 
         json(),
