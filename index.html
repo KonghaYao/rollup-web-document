@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Rollup-Web</title>
+        <meta http-equiv="expires" content="2000" />
+        <meta http-equiv="cache-control" content="only-if-cached" />
+        <link rel="preconnect" href="https://fastly.jsdelivr.net" />
+        <link rel="preconnect" href="https://cdn.skypack.net" />
+        <script
+            defer
+            src="https://cdn.tailwindcss.com?plugins=aspect-ratio,line-clamp"
+        ></script>
+    </head>
+    <body></body>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "rollup-web": "https://fastly.jsdelivr.net/npm/rollup-web@4.3.3",
+                "rollup-web/": "https://fastly.jsdelivr.net/npm/rollup-web@4.3.3/",
+                "@rollup/": "https://esm.sh/@rollup/"
+            }
+        }
+    </script>
+    <script type="module" src="./js/index.js"></script>
+</html>
