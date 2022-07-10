@@ -10,23 +10,51 @@ import {
     sky_module,
     PluginLoader,
 } from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.3/dist/index.js";
-import { drawDependence } from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.3/dist/plugins/drawDependence.js";
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
+
+// mdx 在 worker 中构造失败，所以使用这种方式进行一个保全
+import { decodeNamedCharacterReference } from "https://fastly.jsdelivr.net/npm/decode-named-character-reference@1.0.2/index.js/+esm";
+(async () => {
+    let info = "";
+    const mdxFakeElement = new Proxy(
+        {},
+        {
+            get() {
+                return info;
+            },
+            set(_, __, data) {
+                info = decodeNamedCharacterReference(data);
+                return true;
+            },
+        }
+    );
+    globalThis.document = {
+        createElement() {
+            return mdxFakeElement;
+        },
+    };
+})();
+
 // 导入各种插件
-const [{ default: json }, { babelCore }, { postcss }] =
-    await PluginLoader.loads("plugin-json", "babel.core", "postcss");
+const [{ default: json }, { babelCore }, { postcss }, { mdx }] =
+    await PluginLoader.loads("plugin-json", "babel.core", "postcss", "mdx");
+
 console.log("加载插件完成");
 const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);
 const CDN = globalThis.location.origin + "/";
 const RollupConfig = {
     plugins: [
+        mdx({
+            jsxImportSource: "solid-jsx",
+        }),
+
         json(),
         babelCore({
             babelrc: {
                 presets: [ts, SolidPresets],
             },
-            extensions: [".tsx", ".ts"],
+            extensions: [".tsx", ".mdx", ".ts"],
             log(id) {
                 // console.log("%cbabel ==> " + id, "color:blue");
             },
