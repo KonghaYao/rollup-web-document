@@ -13,8 +13,6 @@ import {
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
 import { mdx } from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.4/dist/plugins/mdx.js";
-
-import { toc } from "https://cdn.skypack.dev/mdast-util-toc";
 // 导入各种插件
 const [{ default: json }, { babelCore }, { postcss }] =
     await PluginLoader.loads("plugin-json", "babel.core", "postcss");
@@ -24,6 +22,17 @@ const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);
 const CDN = globalThis.location.origin + "/";
 const RollupConfig = {
     plugins: [
+        {
+            name: "auto-import-mdx",
+            transform(code, id) {
+                if (id.endsWith(".mdx")) {
+                    const result =
+                        'import {Embed} from "/src/Support/Embed.tsx";\r\n\r\n' +
+                        code;
+                    return result;
+                }
+            },
+        },
         mdx({
             options: {
                 jsxImportSource: "solid-jsx",

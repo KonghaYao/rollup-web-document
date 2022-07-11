@@ -25,8 +25,8 @@ export const Link = (props: { href: string; element: JSX.Element }) => {
 };
 interface RouteProps {
     path: string | RegExp;
-    element?: RouterComponent<any> | JSX.Element;
-    children?: <T>(match: Match) => RouterComponent<T>;
+    element?: RouterComponent<any>;
+    children?: JSX.Element;
 }
 /** 路由显示组件 */
 export const Route: Component<RouteProps> = (props) => {
@@ -52,17 +52,15 @@ export const Route: Component<RouteProps> = (props) => {
     onCleanup(() => {
         router.off(cb);
     });
-    const Inner = props.element;
     return (
         <Show when={matched()}>
-            {props.children ||
-                ((match) => {
-                    if (typeof Inner === "function") {
-                        return <Inner match={match}></Inner>;
-                    } else {
-                        return Inner;
-                    }
-                })}
+            {(match) => {
+                if (typeof props.element === "function") {
+                    return props.element({ match });
+                } else {
+                    return props.children;
+                }
+            }}
         </Show>
     );
 };

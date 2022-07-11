@@ -2,8 +2,17 @@ import { render } from "solid-js/web";
 import "./style/global.css";
 import { Page } from "./components/Page/index";
 import { onMount } from "solid-js";
-import { Route, router } from "./router/index";
+import { Route, router, RouterComponent } from "./router/index";
 import { Setting } from "./Setting";
+
+const PageWrapper: RouterComponent<{}> = (props) => {
+    return (
+        <div class="max-w-2xl w-full bg-white p-4 rounded-lg select-text">
+            <Page match={props.match}></Page>
+        </div>
+    );
+};
+
 const App = () => {
     onMount(() => {
         router.navigate(window.location.hash.slice(1));
@@ -28,10 +37,11 @@ const App = () => {
             </header>
 
             <main className="flex-grow bg-gray-50  p-4  overflow-auto flex justify-center">
-                <div class="max-w-2xl w-full bg-white p-4 rounded-lg select-text">
-                    <Route path={/article\/(.*)/} element={Page}></Route>
-                </div>
-                <Route path="/" element={<div>首页</div>}></Route>
+                <Route path={/article\/(.*)/} element={PageWrapper}></Route>
+
+                <Route path="/">
+                    <div>首页</div>
+                </Route>
             </main>
         </section>
     );
