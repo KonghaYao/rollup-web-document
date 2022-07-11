@@ -9,36 +9,15 @@ import {
     Compiler,
     sky_module,
     PluginLoader,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.3/dist/index.js";
+} from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.4/dist/index.js";
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
+import { mdx } from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.4/dist/plugins/mdx.js";
 
-// mdx 在 worker 中构造失败，所以使用这种方式进行一个保全
-import { decodeNamedCharacterReference } from "https://fastly.jsdelivr.net/npm/decode-named-character-reference@1.0.2/index.js/+esm";
-(async () => {
-    let info = "";
-    const mdxFakeElement = new Proxy(
-        {},
-        {
-            get() {
-                return info;
-            },
-            set(_, __, data) {
-                info = decodeNamedCharacterReference(data);
-                return true;
-            },
-        }
-    );
-    globalThis.document = {
-        createElement() {
-            return mdxFakeElement;
-        },
-    };
-})();
-
+import { toc } from "https://cdn.skypack.dev/mdast-util-toc";
 // 导入各种插件
-const [{ default: json }, { babelCore }, { postcss }, { mdx }] =
-    await PluginLoader.loads("plugin-json", "babel.core", "postcss", "mdx");
+const [{ default: json }, { babelCore }, { postcss }] =
+    await PluginLoader.loads("plugin-json", "babel.core", "postcss");
 
 console.log("加载插件完成");
 const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);

@@ -3,21 +3,34 @@ import "./style/global.css";
 import { Page } from "./components/Page/index";
 import { onMount } from "solid-js";
 import { Route, router } from "./router/index";
+import { Setting } from "./Setting";
 const App = () => {
     onMount(() => {
-        router.navigate(window.location.hash.replace("#", ""));
+        router.navigate(window.location.hash.slice(1));
     });
 
     return (
         <section className="h-screen flex flex-col relative font-song select-none ">
-            <header className="flex w-full justify-center bg-white ">
+            <header className="flex w-full justify-center bg-white border-b-2 border-red-200 ">
                 <div className="w-full px-8 py-2 ">
-                    <div className="text-2xl">DEMO-PAGES</div>
+                    <div className="text-2xl">Doc of Rollup-Web</div>
+                </div>
+                <div
+                    className="w-full px-8 py-2 "
+                    onclick={() => {
+                        router.navigate(
+                            `/article/${Setting.language}/Guide/index.mdx`
+                        );
+                    }}
+                >
+                    <div>Guide</div>
                 </div>
             </header>
 
-            <main className="flex-grow bg-gray-50 p-4 overflow-auto noise-bg">
-                <Route path={/article\/(.*)/} element={Page}></Route>
+            <main className="flex-grow bg-gray-50  p-4  overflow-auto flex justify-center">
+                <div class="max-w-2xl w-full bg-white p-4 rounded-lg select-text">
+                    <Route path={/article\/(.*)/} element={Page}></Route>
+                </div>
                 <Route path="/" element={<div>首页</div>}></Route>
             </main>
         </section>

@@ -1,4 +1,4 @@
-import { createMemo, createSignal, lazy, onMount, Suspense } from "solid-js";
+import { createMemo, lazy, Suspense } from "solid-js";
 import { RouterComponent } from "../../router";
 import { MDXProvider } from "solid-jsx";
 import { Loading } from "../LoadingPage/loading";
