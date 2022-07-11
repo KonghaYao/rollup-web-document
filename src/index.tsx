@@ -1,17 +1,9 @@
 import { render } from "solid-js/web";
 import "./style/global.css";
-import { Page } from "./components/Page/index";
 import { onMount } from "solid-js";
-import { Route, router, RouterComponent } from "./router/index";
+import { Route, router } from "./router/index";
 import { Setting } from "./Setting";
-
-const PageWrapper: RouterComponent<{}> = (props) => {
-    return (
-        <div class="max-w-2xl w-full bg-white p-4 rounded-lg select-text">
-            <Page match={props.match}></Page>
-        </div>
-    );
-};
+import { PageWrapper } from "./components/Page/PageWrapper";
 
 const App = () => {
     onMount(() => {
