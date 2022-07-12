@@ -49,7 +49,10 @@ export const Page: RouterComponent<{
     context().then((res: any) => {
         const [toc, els] = createTOC(el, true);
         tagEl = els;
-        props.expose({ ...res, toc });
+        props.expose({
+            ...res,
+            toc,
+        });
 
         /* 返回滚动位置 */
         const position = new URL(
