@@ -26,14 +26,13 @@ const addTo = (now: NodeInfo, list: NodeInfo[], root: NodeInfo[]) => {
 export const createTOC = (el: Element | Node, flat: true) => {
     const list: NodeInfo[] = [];
 
-    (el as any)
-        .querySelectorAll("h1,h2,h3,h4,h5,h6")
-        .forEach((el: HTMLHeadingElement, index: number) => {
-            const order = parseInt(el.tagName[1]);
-            const id = btoa(el.textContent || "").slice(0, 5) + index;
-            el.dataset.info = id;
-            const now = { id, order, info: el.textContent, children: [] };
-            flat ? list.push(now) : addTo(now, list, list);
-        });
-    return list;
+    const els = (el as any).querySelectorAll("h1,h2,h3,h4,h5,h6");
+    els.forEach((el: HTMLHeadingElement, index: number) => {
+        const order = parseInt(el.tagName[1]);
+        const id = btoa(el.textContent || "").slice(0, 5) + index;
+        el.dataset.info = id;
+        const now = { id, order, info: el.textContent, children: [] };
+        flat ? list.push(now) : addTo(now, list, list);
+    });
+    return [list, els];
 };
