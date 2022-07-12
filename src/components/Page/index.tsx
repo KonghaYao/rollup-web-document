@@ -43,7 +43,10 @@ export const Page: RouterComponent<{
     });
 
     return (
-        <div class="markdown-body max-w-2xl flex-grow relative" ref={el!}>
+        <div
+            class="markdown-body max-w-2xl flex-grow relative h-full overflow-auto"
+            ref={el!}
+        >
             <Suspense fallback={<Loading></Loading>}>
                 <Inner></Inner>
             </Suspense>

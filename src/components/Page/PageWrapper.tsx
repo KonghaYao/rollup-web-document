@@ -2,18 +2,8 @@ import { Page } from "./index";
 import { RouterComponent } from "../../router/index";
 import { createSignal, For } from "solid-js";
 import { TOC } from "../../utils/createTOC";
-import { annotate } from "rough-notation";
-import { RoughAnnotation } from "rough-notation/lib/model";
-
-let highlighting: RoughAnnotation;
-const highlightEL = (el: HTMLElement) => {
-    highlighting && highlighting.hide();
-    highlighting = annotate(el, {
-        type: "highlight",
-        color: "#fef3c7",
-    });
-    highlighting.show();
-};
+import { createSingleHighlight } from "./createSingleHighlight";
+const highlightEL = createSingleHighlight();
 
 export const PageWrapper: RouterComponent<{}> = (props) => {
     const [TOCList, setTOC] = createSignal<TOC>([]);
@@ -34,6 +24,7 @@ export const PageWrapper: RouterComponent<{}> = (props) => {
                                 onclick={() => {
                                     const selector = `[data-info="${item.id}"]`;
                                     const el = document.querySelector(selector);
+                                    el?.scrollIntoView();
                                     el && highlightEL(el as HTMLElement);
                                 }}
                             >
