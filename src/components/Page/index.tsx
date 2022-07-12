@@ -21,12 +21,9 @@ const loader = (path: string) => {
         lazy(async () => {
             return import(path).then((res) => {
                 const { default: Comp, ...last } = res;
-
                 return {
                     default: () => {
-                        onMount(() => {
-                            ready(last);
-                        });
+                        onMount(() => ready(last));
                         return (
                             <MDXProvider>
                                 <Comp></Comp>
@@ -40,9 +37,9 @@ const loader = (path: string) => {
     ] as const;
 };
 import { router } from "../../router/index";
-import { scrollToID } from "./scrollToID";
+import { scrollToID, setScrollID } from "./scrollToID";
 export const Page: RouterComponent<{
-    onMoveTo: (el: HTMLElement) => void;
+    onReading: (el: HTMLElement, id: string) => void;
     expose(api: { [key: string]: any; toc: TOC }): void;
 }> = (props) => {
     const [params] = props.match.data as any as string[];
@@ -54,6 +51,7 @@ export const Page: RouterComponent<{
         tagEl = els;
         props.expose({ ...res, toc });
 
+        /* 返回滚动位置 */
         const position = new URL(
             router.getCurrentLocation().hashString,
             location.origin
@@ -66,23 +64,18 @@ export const Page: RouterComponent<{
         /* @ts-ignore */
         el = null;
     });
+    /* 监控用户滚动位置 */
     const ScrollControl = throttle((e: Event) => {
-        for (let i of tagEl) {
-            const offset = i.getBoundingClientRect().y;
-            if (offset > -50 && offset < 100) {
-                console.log(i.dataset.info);
-                const fake = new URL(
-                    router.getCurrentLocation().hashString,
-                    location.origin
-                );
-                fake.searchParams.set("position", i.dataset.info!);
-                const hash = fake.toString().replace(location.origin, "");
-                router.navigate(hash, {
-                    callHooks: false,
-                });
-                break;
-            }
-        }
+        const scrollTop = el.scrollTop;
+        const closest = [...tagEl]
+            .map((now) => {
+                return { el: now, diff: Math.abs(scrollTop - now.offsetTop) };
+            })
+            .sort((a, b) => a.diff - b.diff)[0].el;
+
+        const id = closest.dataset.info;
+        setScrollID(id!);
+        props.onReading(closest, id!);
     }, 300);
     return (
         <div

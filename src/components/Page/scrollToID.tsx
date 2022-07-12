@@ -1,10 +1,24 @@
+import { router } from "../../router/index";
 import { createSingleHighlight } from "./createSingleHighlight";
-
-export const highlightEL = createSingleHighlight();
+export const [highlightEL, highlightHub] = createSingleHighlight();
 export function scrollToID(position: string) {
     const selector = `[data-info="${position}"]`;
     const el = document.querySelector(selector);
-    el?.scrollIntoView({ behavior: "smooth" });
-
-    el && highlightEL(el as HTMLElement);
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        highlightEL(el as HTMLElement, position);
+        setScrollID(position);
+    }
 }
+/* 直接写入，不添加 id */
+export const setScrollID = (id: string) => {
+    const fake = new URL(
+        router.getCurrentLocation().hashString,
+        location.origin
+    );
+    fake.searchParams.set("position", id);
+    const hash = fake.toString().replace(location.origin, "");
+    router.navigate(hash, {
+        callHooks: false,
+    });
+};
