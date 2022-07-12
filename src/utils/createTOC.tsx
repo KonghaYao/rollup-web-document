@@ -28,10 +28,10 @@ export const createTOC = (el: Element | Node, flat: true) => {
 
     (el as any)
         .querySelectorAll("h1,h2,h3,h4,h5,h6")
-        .forEach((el: HTMLHeadingElement) => {
+        .forEach((el: HTMLHeadingElement, index: number) => {
             const order = parseInt(el.tagName[1]);
             const id = "" + Math.random();
-            el.dataset.info = id;
+            el.dataset.info = btoa(id + index).slice(0, 5);
             const now = { id, order, info: el.textContent, children: [] };
             flat ? list.push(now) : addTo(now, list, list);
         });

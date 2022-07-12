@@ -11,18 +11,21 @@ import { JSX } from "solid-js";
 export const router = new Navigo("/", {
     hash: true,
 });
-export type RouterComponent<T> = Component<T & { match: Match }>;
 /** 路由跳转组件 */
-export const Link = (props: { href: string; element: JSX.Element }) => {
+export const Link: Component<{ href: string | (() => string) }> = (props) => {
     const jumpTo = () => {
-        router.navigate(props.href);
+        const src =
+            typeof props.href === "function" ? props.href() : props.href;
+        router.navigate(src);
     };
     return (
         <a onclick={jumpTo}>
-            <Suspense fallback={<p>Loading...</p>}>{props.element}</Suspense>
+            <Suspense fallback={<p>Loading...</p>}>{props.children}</Suspense>
         </a>
     );
 };
+
+export type RouterComponent<T> = Component<T & { match: Match }>;
 interface RouteProps {
     path: string | RegExp;
     element?: RouterComponent<any>;

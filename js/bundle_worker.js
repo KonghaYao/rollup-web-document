@@ -9,10 +9,10 @@ import {
     Compiler,
     sky_module,
     PluginLoader,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.4/dist/index.js";
+} from "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/index.js";
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
-import { mdx } from "https://fastly.jsdelivr.net/npm/rollup-web@4.3.4/dist/plugins/mdx.js";
+import { mdx } from "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/plugins/mdx.js";
 // 导入各种插件
 const [{ default: json }, { babelCore }, { postcss }] =
     await PluginLoader.loads("plugin-json", "babel.core", "postcss");
