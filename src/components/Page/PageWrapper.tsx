@@ -1,11 +1,12 @@
 import { Page } from "./index";
 import { RouterComponent } from "../../router/index";
-import { createResource, createSignal, onCleanup, Show } from "solid-js";
-import { NodeInfo, TOC } from "../../utils/createTOC";
+import { createSignal, onCleanup, Show } from "solid-js";
+import { TOC } from "../../utils/createTOC";
 import { highlightHub, highlightEL } from "./scrollToID";
 import { PageMark } from "./PageMark";
 import { RecommendMessage, RecommendReading } from "./RecommendMessage";
 
+/* 文章页面封装 */
 export const PageWrapper: RouterComponent<{}> = (props) => {
     const [TOCList, setTOC] = createSignal<TOC>([]);
     const [readingID, setReading] = createSignal("");

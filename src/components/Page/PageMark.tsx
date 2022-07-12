@@ -1,7 +1,7 @@
 import { Component, For } from "solid-js";
 import { TOC } from "../../utils/createTOC";
 import { scrollToID } from "./scrollToID";
-
+/* 文章右侧的目录模块 */
 export const PageMark: Component<{
     TOCList: TOC;
     readingID: string;

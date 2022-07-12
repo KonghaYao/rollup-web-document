@@ -1,17 +1,12 @@
-import {
-    createMemo,
-    getOwner,
-    lazy,
-    onCleanup,
-    onMount,
-    Suspense,
-} from "solid-js";
+import { lazy, onCleanup, onMount, Suspense } from "solid-js";
 import { RouterComponent } from "../../router";
 import { MDXProvider } from "solid-jsx";
 import { Loading } from "../LoadingPage/loading";
 import "../../style/markdown.css";
 import { createTOC, TOC } from "../../utils/createTOC";
 import throttle from "lodash-es/throttle";
+
+/* 加载动态 mdx */
 const loader = (path: string) => {
     let ready: any;
     let context = new Promise((resolve) => {
@@ -38,6 +33,8 @@ const loader = (path: string) => {
 };
 import { router } from "../../router/index";
 import { scrollToID, setScrollID } from "./scrollToID";
+
+/* MDX 的一个包装器 */
 export const Page: RouterComponent<{
     onReading: (el: HTMLElement, id: string) => void;
     expose(api: { [key: string]: any; toc: TOC }): void;

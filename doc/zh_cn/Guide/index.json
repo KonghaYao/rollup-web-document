@@ -1,7 +1,17 @@
 [
     {
         "name": "Getting Started",
-        "link": "/Guide/index.mdx",
+
+        "children": [
+            {
+                "name": "textPage",
+                "link": "/Guide/index.mdx"
+            }
+        ]
+    },
+    {
+        "name": "Getting Started",
+        "link": "/..Guide/index",
         "children": []
     }
 ]
