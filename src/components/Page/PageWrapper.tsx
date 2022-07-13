@@ -21,7 +21,7 @@ export const PageWrapper: RouterComponent<{}> = (props) => {
             <Show when={RecommendVisible}>
                 <RecommendReading Pagination={Pagination()}></RecommendReading>
             </Show>
-            <div class="w-full flex-flow flex justify-center">
+            <div class="w-full flex-flow flex justify-center overflow-hidden">
                 <Page
                     onReading={(el, id) => {
                         highlightEL(el, id);
