@@ -7,3 +7,13 @@
 .markdown-body table {
     margin: auto !important;
 }
+.markdown-body blockquote {
+    background-color: #f9fafb;
+    font-size: 0.9em;
+}
+.markdown-body ol li {
+    list-style-type: decimal;
+}
+.markdown-body li {
+    list-style-type: disc;
+}

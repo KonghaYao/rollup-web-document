@@ -92,7 +92,7 @@ const ViewBox: Component<{
     });
     return (
         <div
-            class="flex h-64 w-full bg-gray-50 rounded-2xl overflow-hidden"
+            class="flex h-64 w-full bg-gray-50 rounded-lg overflow-hidden"
             ref={root!}
         >
             <aside class="p-2 bg-blue-400 stroke-white">

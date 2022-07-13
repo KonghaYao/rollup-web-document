@@ -5,12 +5,65 @@ export { pagination };
 
 ## 介绍
 
-Rollup-Web 是一个基于浏览器的打包工具。它可以使你在浏览器中运行 TS、Vue 文件，甚至是其他语言！Rollup-Web 使用 TS 进行项目的编写，并使用了很多高级特性帮助不同类型的文件在 JS 环境中运行，你只需要像使用 Rollup 一样，编写编译脚本即可，剩下的事情，Rollup-Web 会自己解决！
+**Rollup-Web 是一个基于浏览器的打包运行环境。** 它可以使你在浏览器中运行 TS、Vue 文件，甚至是其他语言！Rollup-Web 使用 TS 进行项目的编写，并使用了很多高级特性帮助不同类型的文件在 JS 环境中运行，你只需要像使用 Rollup 一样，编写编译脚本即可，剩下的事情，Rollup-Web 会自己解决！
 
 > Rollup-Web 与 Vite、Rollup、Webpack 等运行在 Nodejs 端的打包工具不同，它只关注于让开发者可以在浏览器上运行多种不同的项目文件，并不在意打包成果，但是他们的运行方式是类似的。
 
 ### 它能做什么？
 
-1. 作为一个
+-   作为前端项目的编译器，从而实现无服务器端的源代码运行：其实这个网页就是由 Rollup-Web 完全打包运行的，并没有其他的服务器支持。
+
+-   作为一个沙盒系统的编译核心：经过 Rollup-Web 的积极开发，我已经封装了 @forsee/sanbox，实现了类似于 CodeSandbox 的在线代码编辑器。
+
+-   实现复杂项目的快速查看：当项目使用 Webpack 进行打包，随着打包的文件越来越大的时候，不如直接用 Rollup-Web 创建一个网页，或许有奇效！
+
+## 运行
+
+0. 创建一个 HTML 文件并引入下面的主线程文件（当然是 module 模式引入）。
+
+1. 让我们创建一个主线程文件
+
+> 主线程文件运行在主线程中，用于创建相应的 DOM 操作。
+
+```js
+/* 推荐：使用 CDN 引入 Rollup-Web，这里使用简写 */
+import { Evaluator } from "rollup-web";
+const Eval = new Evaluator();
+await Eval.useWorker("./js/bundle_worker.js"); // 我们采用 worker 的方式隔离打包器以提高效率
+await Eval.createEnv({}); // 创建执行环境
+await Eval.evaluate("./src/index.tsx"); // 开始执行打包操作
+```
+
+2. 让我们创建打包器 worker
+
+> Worker 能够将打包任务分担给 JS 子线程，减轻主线程的压力，是我们推荐的方式。
+
+```js
+// ! 在 worker 中不能够使用 import map, 如果你使用 CDN ，那么请填入完整 URL
+import { Compiler, sky_module, PluginLoader } from "rollup-web";
+
+// 完整的 Rollup 的 Config!
+const RollupConfig = {
+    plugins: [
+        // 这个插件可以帮助你将所有的 node_module 内的模块转为 在线 CDN 文件！
+        sky_module({
+            cdn: "https://cdn.skypack.dev/",
+            rename: {
+                "solid-js": "solid-js@1.4.2",
+                "solid-js/web": "solid-js@1.4.2/web",
+                "solid-js/store": "solid-js@1.4.2/store",
+            },
+        }),
+    ],
+};
+
+const compiler = new Compiler(RollupConfig, {
+    // 用于为相对地址添加绝对地址
+    root: "https://localhost:8080/index.html", // 直接填你的 html 所在地址
+    extensions: [".tsx", ".ts", ".js", ".json", ".css"], // 为没有后缀名的路径添加后缀名
+    extraBundle: [],
+});
+compiler.useWorker(); // 开启 worker 模式
+```
 
 <Embed src="/doc/zh_cn/Guide/assets/constructor.drawio"></Embed>
