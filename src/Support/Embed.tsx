@@ -7,7 +7,6 @@ import {
     Show,
     Suspense,
 } from "solid-js";
-
 export const Embed: Component<{
     src: string;
     type?: string;
@@ -80,7 +79,7 @@ const ViewBox: Component<{
     return (
         <div class="flex h-64 w-full" ref={root!}>
             <Show when={isInit} fallback={props.fallback}>
-                {props.children}
+                {() => props.children}
             </Show>
         </div>
     );

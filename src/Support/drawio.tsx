@@ -22,34 +22,33 @@ export const Drawio: Component<{ src: string }> = (props) => {
     let container: HTMLDivElement;
     let Graph: any;
 
-    createEffect(
-        on(xml, () => {
-            const config = {
-                editable: false,
-                highlight: "#0000ff",
-                nav: false,
-                center: true,
-                edit: null,
-                resize: true,
-                move: true,
-                responsive: true,
-                zoomEnabled: true,
-                ...props,
-                xml: xml(),
-            };
-            if (Graph) {
-                Graph.graph.destroy();
-                Graph.editor.destroy();
-            }
-            if (xml()) {
-                Graph = new GraphViewer(
-                    container,
-                    mxUtils.parseXml(xml()).documentElement,
-                    config
-                );
-            }
-        })
-    );
+    createEffect(() => {
+        console.log(xml());
+        const config = {
+            editable: false,
+            highlight: "#0000ff",
+            nav: false,
+            center: true,
+            edit: null,
+            resize: true,
+            move: true,
+            responsive: true,
+            zoomEnabled: true,
+            ...props,
+            xml: xml(),
+        };
+        if (Graph) {
+            Graph.graph.destroy();
+            Graph.editor.destroy();
+        }
+        if (xml()) {
+            Graph = new GraphViewer(
+                container,
+                mxUtils.parseXml(xml()).documentElement,
+                config
+            );
+        }
+    });
 
     return (
         <div>
@@ -62,3 +61,5 @@ export const Drawio: Component<{ src: string }> = (props) => {
         </div>
     );
 };
+
+export default Drawio;
