@@ -8,6 +8,8 @@ import {
     Show,
     Suspense,
 } from "solid-js";
+import { ErrorPage } from "../components/LoadingPage/ErrorPage";
+import { Loading } from "../components/LoadingPage/loading";
 import { Refresh } from "../Icon";
 export const Embed: Component<{
     src: string;
@@ -20,11 +22,21 @@ export const Embed: Component<{
     });
     return (
         <div>
-            <ViewBox fallback={<div>白屏</div>}>
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Comp {...props}></Comp>
-                </Suspense>
-            </ViewBox>
+            <ErrorBoundary
+                fallback={(err, reset) => (
+                    <ErrorPage err={err} reload={reset}></ErrorPage>
+                )}
+            >
+                <ViewBox fallback={<div>白屏</div>}>
+                    <Suspense
+                        fallback={
+                            <Loading message="加载 Embed 文件中"></Loading>
+                        }
+                    >
+                        <Comp {...props}></Comp>
+                    </Suspense>
+                </ViewBox>
+            </ErrorBoundary>
         </div>
     );
 };
@@ -79,15 +91,23 @@ const ViewBox: Component<{
         }
     });
     return (
-        <div class="flex h-64 w-full" ref={root!}>
-            <aside class="p-2 bg-blue-400 stroke-orange-50 rounded-sm">
-                <Refresh class="cursor-pointer"></Refresh>
+        <div
+            class="flex h-64 w-full bg-gray-50 rounded-2xl overflow-hidden"
+            ref={root!}
+        >
+            <aside class="p-2 bg-blue-400 stroke-white">
+                <Refresh
+                    class="cursor-pointer select-none"
+                    onclick={() => {
+                        setInit(false);
+                        console.log("点击成功");
+                        setTimeout(() => setInit(true), 500);
+                    }}
+                ></Refresh>
             </aside>
-            <ErrorBoundary fallback={<div> 出错误啦</div>}>
-                <Show when={isInit} fallback={props.fallback}>
-                    {() => props.children}
-                </Show>
-            </ErrorBoundary>
+            <Show when={isInit} fallback={props.fallback}>
+                {() => props.children}
+            </Show>
         </div>
     );
 };

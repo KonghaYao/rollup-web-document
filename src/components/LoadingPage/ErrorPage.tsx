@@ -1,4 +1,8 @@
-export const ErrorPage = (props: { err: Error; reload: () => void }) => {
+import { Component } from "solid-js";
+/* 配合 ErrorBoundary 使用的组件 */
+export const ErrorPage: Component<{ err: any | Error; reload: () => void }> = (
+    props
+) => {
     let reload = props.reload || (() => window.location.reload());
     console.error(props.err);
     return (
@@ -7,7 +11,8 @@ export const ErrorPage = (props: { err: Error; reload: () => void }) => {
             <span className="text-xs">{props.err.message}</span>
             <button
                 className="button-like px-4 py-2 m-2 bg-green-400 text-white"
-                onclick={reload}>
+                onclick={reload}
+            >
                 点击重试
             </button>
         </div>

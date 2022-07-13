@@ -39,7 +39,8 @@ const RollupConfig = {
                             const el =(new DOMParser().parseFromString(${JSON.stringify(
                                 code
                             )}, 'image/svg+xml')).firstChild;
-                            el.classList = props.class
+                            el.classList = props.class;
+                            el.onclick = props.onclick
                             return el}`,
                     };
                 }

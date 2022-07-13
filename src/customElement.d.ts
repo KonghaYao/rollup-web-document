@@ -14,6 +14,7 @@ declare module "solid-js" {
             "xy-select": any;
             "xy-option": any;
             "xy-tips": any;
+            "intersecting-circles-spinner": any;
             "xy-input": any;
             "atom-spinner": any;
             "sl-image-comparer": any;
