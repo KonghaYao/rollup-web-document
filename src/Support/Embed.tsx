@@ -1,12 +1,14 @@
 import {
     Component,
     createSignal,
+    ErrorBoundary,
     JSX,
     lazy,
     onMount,
     Show,
     Suspense,
 } from "solid-js";
+import { Refresh } from "../Icon";
 export const Embed: Component<{
     src: string;
     type?: string;
@@ -78,12 +80,14 @@ const ViewBox: Component<{
     });
     return (
         <div class="flex h-64 w-full" ref={root!}>
-            <aside>
-                <div>控制栏</div>
+            <aside class="p-2 bg-blue-400 stroke-orange-50 rounded-sm">
+                <Refresh class="cursor-pointer"></Refresh>
             </aside>
-            <Show when={isInit} fallback={props.fallback}>
-                {() => props.children}
-            </Show>
+            <ErrorBoundary fallback={<div> 出错误啦</div>}>
+                <Show when={isInit} fallback={props.fallback}>
+                    {() => props.children}
+                </Show>
+            </ErrorBoundary>
         </div>
     );
 };

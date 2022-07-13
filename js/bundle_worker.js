@@ -23,6 +23,29 @@ const CDN = globalThis.location.origin + "/";
 const RollupConfig = {
     plugins: [
         {
+            name: "svg",
+            resolveId(thisFile) {
+                if (thisFile.endsWith(".svg")) {
+                    return "https://cdn.jsdelivr.net/npm/" + thisFile;
+                }
+
+                return;
+            },
+            async load(id) {
+                if (id.endsWith(".svg")) {
+                    const code = await fetch(id).then((res) => res.text());
+                    return {
+                        code: `export default (props)=>{
+                            const el =(new DOMParser().parseFromString(${JSON.stringify(
+                                code
+                            )}, 'image/svg+xml')).firstChild;
+                            el.classList = props.class
+                            return el}`,
+                    };
+                }
+            },
+        },
+        {
             name: "auto-import-mdx",
             transform(code, id) {
                 if (id.endsWith(".mdx")) {

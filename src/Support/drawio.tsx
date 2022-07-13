@@ -55,13 +55,11 @@ export const Drawio: Component<{ src: string }> = (props) => {
         }
     });
     return (
-        <div class="flex-grow">
+        <div class="flex-grow overflow-hidden flex justify-center items-center w-full">
             <Show when={xml.loading}>
-                <div class="z-50 absolute top-0 left-0 h-full w-full backdrop-blur-sm">
-                    <Loading></Loading>
-                </div>
+                <Loading></Loading>
             </Show>
-            <div class="container flex-grow" ref={container!}></div>
+            <div class="container h-full " ref={container!}></div>
         </div>
     );
 };
