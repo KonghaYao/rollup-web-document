@@ -46,6 +46,7 @@ export const Drawio: Component<{ src: string }> = (props) => {
             }
             const XMLD = mxUtils.parseXml(xml()).documentElement;
             Graph = new GraphViewer(container, XMLD, config);
+            console.log(Graph);
         })
     );
     onCleanup(() => {

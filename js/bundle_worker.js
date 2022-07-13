@@ -94,9 +94,6 @@ const compiler = new Compiler(RollupConfig, {
     autoBuildFetchHook: false,
     // 为没有后缀名的 url 添加后缀名
     extensions: [".tsx", ".ts", ".js", ".json", ".css"],
-    log(url) {
-        console.log("%c Download ==> " + url, "color:green");
-    },
     // useDataCache: {
     //     ignore: isDev
     //         ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
