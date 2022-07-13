@@ -36,7 +36,7 @@ const ViewBox: Component<{
     let io: IntersectionObserver;
     let root: HTMLDivElement;
     const init = () => {
-        console.log("加载数据");
+        console.log("异步加载文件数据");
         setInit(true);
     };
     onMount(() => {
@@ -78,6 +78,9 @@ const ViewBox: Component<{
     });
     return (
         <div class="flex h-64 w-full" ref={root!}>
+            <aside>
+                <div>控制栏</div>
+            </aside>
             <Show when={isInit} fallback={props.fallback}>
                 {() => props.children}
             </Show>

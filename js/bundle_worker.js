@@ -37,6 +37,9 @@ const RollupConfig = {
             options: {
                 jsxImportSource: "solid-jsx",
             },
+            // log(code, id) {
+            //     console.log(id);
+            // },
         }),
 
         json(),

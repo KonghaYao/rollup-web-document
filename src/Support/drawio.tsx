@@ -4,6 +4,7 @@ import {
     createResource,
     Match,
     on,
+    onCleanup,
     onMount,
     Show,
     Switch,
@@ -22,42 +23,45 @@ export const Drawio: Component<{ src: string }> = (props) => {
     let container: HTMLDivElement;
     let Graph: any;
 
-    createEffect(() => {
-        console.log(xml());
-        const config = {
-            editable: false,
-            highlight: "#0000ff",
-            nav: false,
-            center: true,
-            edit: null,
-            resize: true,
-            move: true,
-            responsive: true,
-            zoomEnabled: true,
-            ...props,
-            xml: xml(),
-        };
+    createEffect(
+        on(xml, () => {
+            if (!xml()) return;
+            if (Graph && xml() === Graph.xml) return;
+            const config = {
+                editable: false,
+                highlight: "#0000ff",
+                nav: false,
+                center: true,
+                edit: null,
+                resize: true,
+                move: true,
+                responsive: true,
+                zoomEnabled: true,
+                ...props,
+                xml: xml(),
+            };
+            if (Graph) {
+                Graph.graph.destroy();
+                Graph.editor.destroy();
+            }
+            const XMLD = mxUtils.parseXml(xml()).documentElement;
+            Graph = new GraphViewer(container, XMLD, config);
+        })
+    );
+    onCleanup(() => {
         if (Graph) {
             Graph.graph.destroy();
             Graph.editor.destroy();
         }
-        if (xml()) {
-            Graph = new GraphViewer(
-                container,
-                mxUtils.parseXml(xml()).documentElement,
-                config
-            );
-        }
     });
-
     return (
-        <div>
+        <div class="flex-grow">
             <Show when={xml.loading}>
                 <div class="z-50 absolute top-0 left-0 h-full w-full backdrop-blur-sm">
                     <Loading></Loading>
                 </div>
             </Show>
-            <div ref={container!}></div>
+            <div class="container flex-grow" ref={container!}></div>
         </div>
     );
 };
