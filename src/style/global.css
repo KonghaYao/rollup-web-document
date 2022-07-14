@@ -1,6 +1,7 @@
 @import url("https://fastly.jsdelivr.net/gh/KonghaYao/chinese-free-web-font-storage/build/斗鱼追光体/result.css");
 @import url("https://fastly.jsdelivr.net/npm/@fontsource/noto-serif-sc/index.css");
 @import url("https://fastly.jsdelivr.net/npm/@fontsource/material-icons/index.css");
+@import url("./Support.css");
 .font-song {
     font-family: "Noto Serif SC";
 }

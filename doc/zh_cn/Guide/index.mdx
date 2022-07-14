@@ -19,7 +19,13 @@ export { pagination };
 
 ## 运行
 
-0. 创建一个 HTML 文件并引入下面的主线程文件（当然是 module 模式引入）。
+<Embed src="/doc/zh_cn/Guide/assets/constructor.drawio"></Embed>
+
+0. 创建一个 HTML 文件并引入下面的主线程文件。
+
+```html
+<script src="./js/index.js" type="module"></script>
+```
 
 1. 让我们创建一个主线程文件
 
@@ -37,6 +43,7 @@ await Eval.evaluate("./src/index.tsx"); // 开始执行打包操作
 2. 让我们创建打包器 worker
 
 > Worker 能够将打包任务分担给 JS 子线程，减轻主线程的压力，是我们推荐的方式。
+> 但是需要浏览器支持 [module Worker 特性](https://caniuse.com/?search=module%20worker)
 
 ```js
 // ! 在 worker 中不能够使用 import map
@@ -66,5 +73,3 @@ const compiler = new Compiler(RollupConfig, {
 });
 compiler.useWorker(); // 开启 worker 模式
 ```
-
-<Embed src="/doc/zh_cn/Guide/assets/constructor.drawio"></Embed>

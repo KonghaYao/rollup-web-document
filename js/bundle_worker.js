@@ -4,21 +4,30 @@
 //     sky_module,
 //     PluginLoader,
 // } from "../rollup-web/dist/index.js";
-// import { drawDependence } from "../rollup-web/dist/plugins/drawDependence.js";
 import {
     Compiler,
     sky_module,
     PluginLoader,
 } from "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/index.js";
+
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
 import { mdx } from "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/plugins/mdx.js";
 // 导入各种插件
-const [{ default: json }, { babelCore }, { postcss }] =
-    await PluginLoader.loads("plugin-json", "babel.core", "postcss");
+const [{ default: json }, { babelCore }] = await PluginLoader.loads(
+    "plugin-json",
+    "babel.core"
+);
 
 console.log("加载插件完成");
 const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);
+console.log(isDev);
+const { postcss } = await import(
+    isDev
+        ? "/rollup-web/dist/plugins/postcss.js"
+        : "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/plugins/postcss.js"
+);
+
 const CDN = globalThis.location.origin + "/";
 const RollupConfig = {
     plugins: [
@@ -84,7 +93,7 @@ const RollupConfig = {
                 "solid-js/store": "solid-js@1.4.2/store",
             },
         }),
-        postcss(),
+        postcss({}),
     ],
 };
 
@@ -93,7 +102,7 @@ const compiler = new Compiler(RollupConfig, {
     root: CDN,
     autoBuildFetchHook: false,
     // 为没有后缀名的 url 添加后缀名
-    extensions: [".tsx", ".ts", ".js", ".json", ".css"],
+    extensions: [".tsx", ".ts", ".mdx", ".js", ".json", ".css"],
     // useDataCache: {
     //     ignore: isDev
     //         ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)

@@ -60,7 +60,7 @@ export const Drawio: Component<{ src: string }> = (props) => {
             <Show when={xml.loading}>
                 <Loading></Loading>
             </Show>
-            <div class="container h-full " ref={container!}></div>
+            <div class="container h-full w-full" ref={container!}></div>
         </div>
     );
 };
