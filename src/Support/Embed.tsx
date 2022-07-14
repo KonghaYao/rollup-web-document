@@ -21,7 +21,7 @@ export const Embed: Component<{
         return import(`/src/Support/${type}.tsx`);
     });
     return (
-        <div>
+        <div class="my-2 ">
             <ErrorBoundary
                 fallback={(err, reset) => (
                     <ErrorPage err={err} reload={reset}></ErrorPage>
@@ -96,14 +96,7 @@ const ViewBox: Component<{
             ref={root!}
         >
             <aside class="p-2 bg-blue-400 stroke-white">
-                <Refresh
-                    class="cursor-pointer select-none"
-                    onclick={() => {
-                        setInit(false);
-                        console.log("点击成功");
-                        setTimeout(() => setInit(true), 500);
-                    }}
-                ></Refresh>
+                <Refresh class="" onclick={() => {}}></Refresh>
             </aside>
             <Show when={isInit} fallback={props.fallback}>
                 {() => props.children}

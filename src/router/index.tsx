@@ -19,7 +19,7 @@ export const Link: Component<{ href: string | (() => string) }> = (props) => {
         router.navigate(src);
     };
     return (
-        <a onclick={jumpTo}>
+        <a onclick={jumpTo} class="cursor-pointer">
             <Suspense fallback={<p>Loading...</p>}>{props.children}</Suspense>
         </a>
     );
