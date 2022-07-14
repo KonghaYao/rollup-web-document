@@ -3,8 +3,12 @@
         "name": "Getting Started",
         "children": [
             {
-                "name": "textPage",
+                "name": "快速开始",
                 "link": "/Guide/index.mdx"
+            },
+            {
+                "name": "架构设计",
+                "link": "/Guide/framework.mdx"
             }
         ]
     },

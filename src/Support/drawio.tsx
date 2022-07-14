@@ -2,18 +2,16 @@ import {
     Component,
     createEffect,
     createResource,
-    Match,
     on,
     onCleanup,
-    onMount,
     Show,
-    Switch,
 } from "solid-js";
 import { Loading } from "../components/LoadingPage/loading";
 import { GH } from "../global";
 import { loadScript } from "../utils/loadScript";
 import { useGlobal } from "../utils/useGlobal";
 await loadScript(GH + "jgraph/drawio/src/main/webapp/js/viewer.min.js");
+
 export const Drawio: Component<{ src: string }> = (props) => {
     const [xml, { mutate: setXML, refetch }] = createResource(() => {
         return fetch(props.src).then((res) => res.text());
@@ -46,6 +44,7 @@ export const Drawio: Component<{ src: string }> = (props) => {
             }
             const XMLD = mxUtils.parseXml(xml()).documentElement;
             Graph = new GraphViewer(container, XMLD, config);
+
             console.log(Graph);
         })
     );

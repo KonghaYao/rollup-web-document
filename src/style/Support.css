@@ -1,3 +1,8 @@
 .geDiagramContainer {
     height: 95%;
 }
+/* 修正 drawio 的显示问题 */
+body img[border="0"] + div {
+    display: flex !important;
+    opacity: 1 !important;
+}
