@@ -1,11 +1,14 @@
 import { render } from "solid-js/web";
 import "./style/global.css";
-import { Component, onMount } from "solid-js";
+import { Component, For, onMount } from "solid-js";
 import { Link, Route, router } from "./router/index";
 import { Setting } from "./Setting";
 import { GithubInverted, LanguageOutline } from "./Icon";
 import { PageWrapper } from "./components/Page/PageWrapper";
+
+import "@shoelace-style/shoelace/dist/components/dropdown/dropdown.js";
 const AppHeader: Component<{}> = () => {
+    const languages = [{ label: "中文", value: "zh_cn" }];
     return (
         <header className="flex w-full justify-center bg-white border-b-2 border-red-200 px-4">
             <div className="w-full px-8 py-2 ">
@@ -26,7 +29,31 @@ const AppHeader: Component<{}> = () => {
                 >
                     <GithubInverted className="w-full px-8 py-2 "></GithubInverted>
                 </a>
-                <LanguageOutline className="w-full px-8 py-2 "></LanguageOutline>
+                {/* 语言更换 */}
+                <sl-dropdown>
+                    <div slot="trigger" className="w-full px-4  ">
+                        <LanguageOutline></LanguageOutline>
+                    </div>
+                    <main
+                        class=" bg-white shadow-lg rounded-md mx-4 my-1 flex flex-col"
+                        style="z-index:100"
+                    >
+                        <For each={languages}>
+                            {(item) => {
+                                return (
+                                    <div
+                                        class="cursor-pointer px-2 py-1 whitespace-nowrap flex-none"
+                                        onclick={() => {
+                                            Setting.language = item.value;
+                                        }}
+                                    >
+                                        {item.label}
+                                    </div>
+                                );
+                            }}
+                        </For>
+                    </main>
+                </sl-dropdown>
             </aside>
         </header>
     );
