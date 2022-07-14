@@ -23,6 +23,7 @@ const addTo = (now: NodeInfo, list: NodeInfo[], root: NodeInfo[]) => {
         list.push(now);
     }
 };
+/* 检查 DOM 下面的元素，并生成 TOC */
 export const createTOC = (el: Element | Node, flat: true) => {
     const list: NodeInfo[] = [];
 

@@ -5,22 +5,6 @@ import { Loading } from "../LoadingPage/loading";
 import "../../style/markdown.css";
 import { createTOC, TOC } from "../../utils/createTOC";
 import throttle from "lodash-es/throttle";
-import { loadLink, loadScript } from "../../utils/loadScript";
-import { NPM } from "../../global";
-
-const PrismSupport = async (el: HTMLElement) => {
-    await loadScript(NPM + "prismjs/prism.min.js");
-    await loadScript(
-        NPM + "prismjs/plugins/autoloader/prism-autoloader.min.js"
-    );
-    await loadLink(NPM + "prism-themes@1.9.0/themes/prism-one-light.min.css");
-    const Prism = useGlobal<any>("Prism");
-    Prism.plugins.autoloader.languages_path = NPM + "prismjs/components/";
-    Prism.manual = true;
-    el.querySelectorAll("pre code").forEach((i) => {
-        Prism.highlightElement(i);
-    });
-};
 
 /* 加载动态 mdx */
 const loader = (path: string) => {
@@ -49,7 +33,7 @@ const loader = (path: string) => {
 };
 import { router } from "../../router/index";
 import { scrollToID, setScrollID } from "./scrollToID";
-import { useGlobal } from "../../utils/useGlobal";
+import { PrismSupport } from "../../utils/PrismSupport";
 
 /* MDX 的一个包装器 */
 export const Page: RouterComponent<{
