@@ -13,6 +13,9 @@ import {
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
 import { mdx } from "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/plugins/mdx.js";
+const { postcss } = await import(
+    "https://fastly.jsdelivr.net/npm/rollup-web@4.4.1/dist/plugins/postcss.js"
+);
 // 导入各种插件
 const [{ default: json }, { babelCore }] = await PluginLoader.loads(
     "plugin-json",
@@ -22,11 +25,6 @@ const [{ default: json }, { babelCore }] = await PluginLoader.loads(
 console.log("加载插件完成");
 const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);
 console.log(isDev);
-const { postcss } = await import(
-    isDev
-        ? "/rollup-web/dist/plugins/postcss.js"
-        : "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/plugins/postcss.js"
-);
 
 const CDN = globalThis.location.origin + "/";
 const RollupConfig = {
