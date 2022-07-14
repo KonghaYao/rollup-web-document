@@ -68,7 +68,10 @@ const App = () => {
         <section className="h-screen flex flex-col relative font-song select-none ">
             <AppHeader></AppHeader>
             <main className="flex-grow bg-gray-50  p-4  overflow-auto flex justify-center">
-                <Route path={/article\/(.*)/} element={PageWrapper}></Route>
+                <Route
+                    path={"/article/:language/***" || /article\/(.*)/}
+                    element={PageWrapper}
+                ></Route>
 
                 <Route path="/">
                     <div>首页</div>
