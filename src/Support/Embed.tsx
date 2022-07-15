@@ -4,6 +4,7 @@ import {
     ErrorBoundary,
     JSX,
     lazy,
+    onCleanup,
     onMount,
     Show,
     Suspense,
@@ -29,6 +30,7 @@ export const Embed: Component<{
                 )}
             >
                 <ViewBox
+                    threshold="0px"
                     fallback={<div>白屏</div>}
                     autoheight={props.autoheight}
                 >
@@ -46,9 +48,6 @@ export const Embed: Component<{
 };
 const ViewBox: Component<{
     fallback: JSX.Element;
-    timeout?: number;
-    direction?: string;
-    threshold?: string;
     autoheight?: boolean;
 }> = (props) => {
     const [isInit, setInit] = createSignal(false);
@@ -59,41 +58,27 @@ const ViewBox: Component<{
         setInit(true);
     };
     onMount(() => {
-        if (!props.timeout) {
-            // 根据滚动方向来构造视口外边距，用于提前加载
-            let rootMargin: string;
-            switch (props.direction) {
-                case "horizontal":
-                    rootMargin = `0px ${props.threshold}`;
-                    break;
-                default:
-                    rootMargin = `${props.threshold} 0px`;
+        // 观察视口与组件容器的交叉情况
+        io = new window.IntersectionObserver(
+            (entries) => {
+                if (
+                    // 正在交叉
+                    entries[0].isIntersecting
+                ) {
+                    init();
+                    io.unobserve(entries[0].target);
+                }
+            },
+            {
+                rootMargin: "0px",
+                root: null,
+                threshold: 0,
             }
-            try {
-                // 观察视口与组件容器的交叉情况
-                io = new window.IntersectionObserver(
-                    (entries) => {
-                        if (
-                            // 正在交叉
-                            entries[0].isIntersecting ||
-                            // 交叉率大于0
-                            entries[0].intersectionRatio
-                        ) {
-                            init();
-                            io.unobserve(root);
-                        }
-                    },
-                    {
-                        rootMargin,
-                        root: null,
-                        threshold: [0, Number.MIN_VALUE, 0.01],
-                    }
-                );
-                io.observe(root);
-            } catch (e) {
-                init();
-            }
-        }
+        );
+        io.observe(root);
+    });
+    onCleanup(() => {
+        io && io.disconnect();
     });
     return (
         <div
@@ -101,11 +86,11 @@ const ViewBox: Component<{
             classList={{ "h-64": !props.autoheight }}
             ref={root!}
         >
-            <aside class="p-2 bg-blue-400 stroke-white">
+            <div class="p-2 bg-blue-400 stroke-white h-full flex flex-col">
                 <Refresh class="" onclick={() => {}}></Refresh>
-            </aside>
-            <Show when={isInit} fallback={props.fallback}>
-                {() => props.children}
+            </div>
+            <Show when={isInit()} fallback={props.fallback}>
+                {props.children}
             </Show>
         </div>
     );
