@@ -30,7 +30,6 @@ export const Embed: Component<{
                 )}
             >
                 <ViewBox
-                    threshold="0px"
                     fallback={<div>白屏</div>}
                     autoheight={props.autoheight}
                 >
@@ -65,7 +64,9 @@ const ViewBox: Component<{
                     // 正在交叉
                     entries[0].isIntersecting
                 ) {
-                    init();
+                    setTimeout(() => {
+                        init();
+                    }, 300);
                     io.unobserve(entries[0].target);
                 }
             },
