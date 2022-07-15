@@ -2,7 +2,6 @@ import { Evaluator } from "rollup-web";
 
 const Eval = new Evaluator();
 await Eval.useWorker("./js/bundle_worker.js");
-console.log(Eval);
 await Eval.createEnv({});
 
 // 开始执行打包操作
