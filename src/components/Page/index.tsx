@@ -94,6 +94,7 @@ export const Page: RouterComponent<{
             <Suspense fallback={<Loading></Loading>}>
                 <Inner></Inner>
             </Suspense>
+            {props.children}
         </div>
     );
 };

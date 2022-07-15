@@ -4,17 +4,17 @@ import { Setting } from "../../Setting";
 
 export type RecommendMessage = {
     name: string;
-    link: string;
-    children: RecommendMessage;
-}[];
+    link?: string;
+    children: RecommendMessage[];
+};
 
 /* 文章左侧推荐顺序 */
-export const RecommendReading: Component<{ Pagination?: RecommendMessage }> = (
-    props
-) => {
+export const RecommendReading: Component<{
+    Pagination?: RecommendMessage[];
+}> = (props) => {
     const now = router.getCurrentLocation().hashString;
     const pre = `/article/${Setting.language}`;
-    const genArray = (arr: RecommendMessage) =>
+    const genArray = (arr: RecommendMessage[]) =>
         arr.map((i) => {
             const isNow = now.startsWith(pre + i.link);
             return {
