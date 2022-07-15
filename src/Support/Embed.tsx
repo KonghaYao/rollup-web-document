@@ -14,6 +14,7 @@ import { Refresh } from "../Icon";
 export const Embed: Component<{
     src: string;
     type?: string;
+    autoheight?: boolean;
 }> = (props) => {
     if (!props.src) throw new Error("你忘记 Embed 的 src 路径了");
     const type = props.type || props.src.replace(/.*\.([^\.]+?)$/, "$1");
@@ -27,7 +28,10 @@ export const Embed: Component<{
                     <ErrorPage err={err} reload={reset}></ErrorPage>
                 )}
             >
-                <ViewBox fallback={<div>白屏</div>}>
+                <ViewBox
+                    fallback={<div>白屏</div>}
+                    autoheight={props.autoheight}
+                >
                     <Suspense
                         fallback={
                             <Loading message="加载 Embed 文件中"></Loading>
@@ -45,6 +49,7 @@ const ViewBox: Component<{
     timeout?: number;
     direction?: string;
     threshold?: string;
+    autoheight?: boolean;
 }> = (props) => {
     const [isInit, setInit] = createSignal(false);
     let io: IntersectionObserver;
@@ -92,7 +97,8 @@ const ViewBox: Component<{
     });
     return (
         <div
-            class="flex h-64 w-full bg-gray-50 rounded-lg overflow-hidden"
+            class="flex w-full bg-gray-50 rounded-lg overflow-hidden"
+            classList={{ "h-64": !props.autoheight }}
             ref={root!}
         >
             <aside class="p-2 bg-blue-400 stroke-white">

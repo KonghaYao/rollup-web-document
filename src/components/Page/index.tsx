@@ -87,7 +87,7 @@ export const Page: RouterComponent<{
     }, 300);
     return (
         <div
-            class="markdown-body max-w-2xl flex-grow relative h-full overflow-auto"
+            class="markdown-body max-w-2xl w-full flex-grow relative h-full overflow-y-auto overflow-x-hidden"
             ref={el!}
             onScroll={ScrollControl}
         >
