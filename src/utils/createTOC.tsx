@@ -24,17 +24,18 @@ const addTo = (now: NodeInfo, list: NodeInfo[], root: NodeInfo[]) => {
     }
 };
 /* 检查 DOM 下面的元素，并生成 TOC */
-export const createTOC = (el: Element | Node, flat: true) => {
+export const createTOC = (el: Element, flat: true) => {
     const list: NodeInfo[] = [];
 
-    const els = (el as any).querySelectorAll("h1,h2,h3,h4,h5,h6");
-    els.forEach((el: HTMLHeadingElement, index: number) => {
+    const els = el.querySelectorAll("h1,h2,h3,h4,h5,h6");
+    els.forEach((el, index) => {
         const order = parseInt(el.tagName[1]);
         const id =
             btoa(encodeURIComponent(el.textContent || "")).slice(0, 5) + index;
+        /* @ts-ignore */
         el.dataset.info = id;
         const now = { id, order, info: el.textContent, children: [] };
         flat ? list.push(now) : addTo(now, list, list);
     });
-    return [list, els];
+    return [list, els] as const;
 };

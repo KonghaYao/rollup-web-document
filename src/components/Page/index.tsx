@@ -45,9 +45,10 @@ export const Page: RouterComponent<{
         .replace(/\?.*/, "");
     const [Inner, context] = loader(params);
     let el: HTMLDivElement;
-    let tagEl: HTMLElement[];
+    let tagEl: NodeListOf<HTMLElement>;
     context().then((res: any) => {
         const [toc, els] = createTOC(el, true);
+        /* @ts-ignore */
         tagEl = els;
         props.expose({
             ...res,
@@ -59,7 +60,11 @@ export const Page: RouterComponent<{
             router.getCurrentLocation().hashString,
             location.origin
         ).searchParams.get("position");
-        position && scrollToID(position);
+        if (position) {
+            scrollToID(position);
+        } else {
+            scrollToID(toc[0].id);
+        }
     });
     onCleanup(() => {
         /* @ts-ignore */
