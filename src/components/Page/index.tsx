@@ -40,9 +40,10 @@ export const Page: RouterComponent<{
     onReading: (el: HTMLElement, id: string) => void;
     expose(api: { [key: string]: any; toc: TOC }): void;
 }> = (props) => {
-    const params = props.match.hashString
-        .replace("article", "doc")
+    const params = props.match.url
+        .replace("article", "/doc")
         .replace(/\?.*/, "");
+    console.log(props.match);
     const [Inner, context] = loader(params);
     let el: HTMLDivElement;
     let tagEl: HTMLElement[];
