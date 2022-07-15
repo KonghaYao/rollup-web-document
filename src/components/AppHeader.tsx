@@ -1,19 +1,26 @@
-import { Component, For } from "solid-js";
+import { Component, createSignal, For } from "solid-js";
 import { Link } from "../router/index";
 import { Setting } from "../Setting";
 import { GithubInverted, LanguageOutline } from "../Icon";
 
 import "@shoelace-style/shoelace/dist/components/dropdown/dropdown.js";
 export const AppHeader: Component<{}> = () => {
-    const languages = [
-        { label: "中文", value: "zh_cn" },
-        { label: "English", value: "en" },
-    ];
+    const [languages, setLang] = createSignal(
+        [
+            { label: "中文", value: "zh_cn" },
+            { label: "English", value: "en" },
+        ].map((i) => {
+            return { ...i, selected: Setting.language === i.value };
+        })
+    );
+
     return (
         <header className="flex w-full justify-center bg-white border-b-2 border-red-200 px-4">
-            <div className="w-full px-8 py-2 ">
-                <div className="text-2xl">Doc of Rollup-Web</div>
-            </div>
+            <Link href="/">
+                <div className="w-full px-8 py-2 ">
+                    <div className="text-2xl">Doc of Rollup-Web</div>
+                </div>
+            </Link>
             <aside class="flex items-center mx-4">
                 <Link
                     href={() => {
@@ -30,22 +37,32 @@ export const AppHeader: Component<{}> = () => {
                     <GithubInverted className="w-full px-8 py-2 "></GithubInverted>
                 </a>
                 {/* 语言更换 */}
-                <sl-dropdown>
+                <sl-dropdown class="z-10">
                     <div slot="trigger" className="w-full px-4  ">
                         <LanguageOutline></LanguageOutline>
                     </div>
-                    <main
-                        class=" bg-white shadow-lg rounded-md mx-4 my-1 flex flex-col"
-                        style="z-index:100"
-                    >
-                        <For each={languages}>
+                    <main class=" bg-white shadow-lg rounded-md mx-4 my-1 flex flex-col overflow-hidden">
+                        <For each={languages()}>
                             {(item) => {
                                 return (
                                     <div
                                         class="cursor-pointer px-2 py-1 whitespace-nowrap flex-none"
-                                        onclick={() =>
-                                            (Setting.language = item.value)
-                                        }
+                                        classList={{
+                                            "bg-gray-100": item.selected,
+                                        }}
+                                        onclick={() => {
+                                            Setting.language = item.value;
+                                            setLang((languages) => {
+                                                return languages.map((i) => {
+                                                    return {
+                                                        ...i,
+                                                        selected:
+                                                            Setting.language ===
+                                                            i.value,
+                                                    };
+                                                });
+                                            });
+                                        }}
                                     >
                                         {item.label}
                                     </div>

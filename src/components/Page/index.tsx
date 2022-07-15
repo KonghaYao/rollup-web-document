@@ -43,7 +43,6 @@ export const Page: RouterComponent<{
     const params = props.match.url
         .replace("article", "/doc")
         .replace(/\?.*/, "");
-    console.log(props.match);
     const [Inner, context] = loader(params);
     let el: HTMLDivElement;
     let tagEl: HTMLElement[];
