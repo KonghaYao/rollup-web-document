@@ -60,11 +60,8 @@ export const Page: RouterComponent<{
             router.getCurrentLocation().hashString,
             location.origin
         ).searchParams.get("position");
-        if (position) {
-            scrollToID(position);
-        } else {
-            scrollToID(toc[0].id);
-        }
+        // 这个位置不能 smooth ，因为动画会导致其他懒加载被触发
+        scrollToID(position ? position : toc[0].id, false);
     });
     onCleanup(() => {
         /* @ts-ignore */

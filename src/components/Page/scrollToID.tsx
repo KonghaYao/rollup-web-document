@@ -1,11 +1,11 @@
 import { router } from "../../router/index";
 import { createSingleHighlight } from "./createSingleHighlight";
 export const [highlightEL, highlightHub] = createSingleHighlight();
-export function scrollToID(position: string) {
+export function scrollToID(position: string, smooth = true) {
     const selector = `[data-info="${position}"]`;
     const el = document.querySelector(selector);
     if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
+        el.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
         highlightEL(el as HTMLElement, position);
         setScrollID(position);
     }
