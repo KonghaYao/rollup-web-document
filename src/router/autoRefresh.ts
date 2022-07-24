@@ -8,4 +8,7 @@ watcher.on("language", (newLang) => {
         router.navigate("/" + current.url.replace(oldLang, newLang));
     }
 });
+watcher.on("font", (newFont) => {
+    document.documentElement.style.setProperty("--Font", newFont);
+});
 export {};

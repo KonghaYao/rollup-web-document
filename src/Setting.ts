@@ -1,6 +1,7 @@
 import mitt from "mitt";
 const origin = {
     language: "zh_cn",
+    font: "Noto Serif SC",
 };
 
 const result = localStorage.getItem("document_setting");
