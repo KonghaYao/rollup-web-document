@@ -1,6 +1,6 @@
 @import url("https://fastly.jsdelivr.net/npm/github-markdown-css");
 .markdown-body {
-    font-family: "Noto Serif SC" !important;
+    font-family: var(--Font) !important;
     background-color: transparent !important;
 }
 .markdown-body img,
@@ -16,4 +16,20 @@
 }
 .markdown-body li {
     list-style-type: disc;
+}
+.markdown-body blockquote {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.markdown-body p,
+ol,
+ul {
+    margin: 1rem 0;
+    line-height: 1.7;
+}
+.markdown-body code {
+    font-family: var(--Font);
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }

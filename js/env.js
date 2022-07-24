@@ -6,11 +6,9 @@ window.location.host.split(":")[0] === "127.0.0.1" &&
             globalThis.location.reload();
         }
     });
-
+// 来自 https://gitee.com/k21vin/front-end-data-visualization/blob/master/src/views/Native/PureCSS/pages/Loading/components/L71.vue
 // 首页白屏的处理
-const prepare = () =>
-    // 来自 https://gitee.com/k21vin/front-end-data-visualization/blob/master/src/views/Native/PureCSS/pages/Loading/components/L71.vue
-    `<div
+const prepare = `<div
         style="position:absolute;top:0;left:0;z-index:1000; display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;width:100vw"
     >
         <div class="com__box">
@@ -156,7 +154,7 @@ const prepare = () =>
 
 // This renders <div>Hello Steve!</div> to the document body
 const wrapper = document.createElement("div");
-wrapper.innerHTML = prepare();
+wrapper.innerHTML = prepare;
 document.body.appendChild(wrapper);
 globalThis.PrepareDestroy = () => {
     wrapper.remove();

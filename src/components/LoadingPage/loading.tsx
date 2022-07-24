@@ -15,7 +15,7 @@ export const Loading: Component<{
         clearInterval(tag);
     });
     return (
-        <div className="h-full w-full flex-col flex justify-center items-center">
+        <div className="h-full w-full flex-grow  flex-col flex justify-center items-center">
             <intersecting-circles-spinner color="#fb923c"></intersecting-circles-spinner>
             <span className="p-4">
                 已等候 {counter()} 秒 - {props.message}

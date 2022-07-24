@@ -11,3 +11,5 @@ export const isLocal = (url: string) => {
 export const isCDNLocal = (url: string) => {
     return url.startsWith(CDN);
 };
+export const absolutePath = (path: string) =>
+    new URL(path, location.href).toString();

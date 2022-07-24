@@ -7,8 +7,16 @@
         <title>Rollup-Web</title>
         <meta http-equiv="expires" content="2000" />
         <meta http-equiv="cache-control" content="only-if-cached" />
-        <link rel="preconnect" href="https://fastly.jsdelivr.net" />
-        <link rel="preconnect" href="https://cdn.skypack.net" />
+        <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+        <link rel="preconnect" href="https://esm.sh" crossorigin />
+        <link rel="preconnect" href="https://cdn.skypack.net" crossorigin />
+        <!-- 低优先级 预获取   -->
+        <link
+            rel="prefetch"
+            href="https://cdn.jsdelivr.net/gh/jgraph/drawio/src/main/webapp/js/viewer.min.js"
+            crossorigin
+        />
         <script
             defer
             src="https://cdn.tailwindcss.com?plugins=aspect-ratio,line-clamp"
@@ -19,8 +27,8 @@
     <script type="importmap">
         {
             "imports": {
-                "rollup-web": "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0",
-                "rollup-web/": "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/",
+                "rollup-web": "https://cdn.jsdelivr.net/npm/rollup-web@4.5.3",
+                "rollup-web/": "https://cdn.jsdelivr.net/npm/rollup-web@4.5.3/",
                 "@rollup/": "https://esm.sh/@rollup/"
             }
         }

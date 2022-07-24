@@ -1,7 +1,11 @@
 @import url("https://fastly.jsdelivr.net/npm/@fontsource/noto-serif-sc/index.css");
 @import url("./Support.css");
+
+:root {
+    --Font: "Noto Serif SC";
+}
 .font-song {
-    font-family: "Noto Serif SC";
+    font-family: var(--Font);
 }
 
 .svg_bundle {
@@ -27,4 +31,7 @@
 ::-webkit-scrollbar-thumb {
     border-radius: 10px; /* 滚动条样式 */
     @apply bg-gray-300;
+}
+.min-h-64 {
+    min-height: 16rem;
 }

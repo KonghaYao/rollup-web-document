@@ -12,6 +12,7 @@ import {
 import { ErrorPage } from "../components/LoadingPage/ErrorPage";
 import { Loading } from "../components/LoadingPage/loading";
 import { Refresh } from "../Icon";
+import { absolutePath } from "../utils/isURLString";
 export const Embed: Component<{
     src: string;
     type?: string;
@@ -20,10 +21,10 @@ export const Embed: Component<{
     if (!props.src) throw new Error("你忘记 Embed 的 src 路径了");
     const type = props.type || props.src.replace(/.*\.([^\.]+?)$/, "$1");
     const Comp = lazy(async () => {
-        return import(`/src/Support/${type}.tsx`);
+        return import(absolutePath(`./src/Support/${type}.tsx`));
     });
     return (
-        <div class="my-2 ">
+        <div class="my-8 ">
             <ErrorBoundary
                 fallback={(err, reset) => (
                     <ErrorPage err={err} reload={reset}></ErrorPage>
@@ -38,7 +39,7 @@ export const Embed: Component<{
                             <Loading message="加载 Embed 文件中"></Loading>
                         }
                     >
-                        <Comp {...props}></Comp>
+                        <Comp {...props} src={absolutePath(props.src)}></Comp>
                     </Suspense>
                 </ViewBox>
             </ErrorBoundary>
@@ -82,9 +83,9 @@ const ViewBox: Component<{
         io && io.disconnect();
     });
     return (
-        <div
-            class="flex w-full bg-gray-50 rounded-lg overflow-hidden"
-            classList={{ "h-64": !props.autoheight }}
+        <main
+            class="flex w-full bg-gray-50 rounded-lg overflow-hidden "
+            classList={{ [props.autoheight ? "min-h-64" : "h-64"]: true }}
             ref={root!}
         >
             <div class="p-2 bg-blue-400 stroke-white h-full flex flex-col">
@@ -93,6 +94,6 @@ const ViewBox: Component<{
             <Show when={isInit()} fallback={props.fallback}>
                 {props.children}
             </Show>
-        </div>
+        </main>
     );
 };

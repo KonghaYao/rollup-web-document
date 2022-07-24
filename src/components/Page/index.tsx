@@ -14,7 +14,7 @@ const loader = (path: string) => {
     });
     return [
         lazy(async () => {
-            return import(path).then((res) => {
+            return import(absolutePath(path)).then((res) => {
                 const { default: Comp, ...last } = res;
                 return {
                     default: () => {
@@ -34,6 +34,7 @@ const loader = (path: string) => {
 import { router } from "../../router/index";
 import { scrollToID, setScrollID } from "./scrollToID";
 import { PrismSupport } from "../../utils/PrismSupport";
+import { absolutePath } from "../../utils/isURLString";
 
 /* MDX 的一个包装器 */
 export const Page: RouterComponent<{
@@ -41,7 +42,7 @@ export const Page: RouterComponent<{
     expose(api: { [key: string]: any; toc: TOC }): void;
 }> = (props) => {
     const params = props.match.url
-        .replace("article", "/doc")
+        .replace("article", "./doc")
         .replace(/\?.*/, "");
     const [Inner, context] = loader(params);
     let el: HTMLDivElement;

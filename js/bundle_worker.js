@@ -8,13 +8,13 @@ import {
     Compiler,
     sky_module,
     PluginLoader,
-} from "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/index.js";
+} from "https://cdn.jsdelivr.net/npm/rollup-web@4.5.3/dist/index.js";
 
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
-import { mdx } from "https://fastly.jsdelivr.net/npm/rollup-web@4.4.0/dist/plugins/mdx.js";
+import { mdx } from "https://cdn.jsdelivr.net/npm/rollup-web@4.5.1/dist/plugins/mdx.js";
 const { postcss } = await import(
-    "https://fastly.jsdelivr.net/npm/rollup-web@4.4.1/dist/plugins/postcss.js"
+    "https://cdn.jsdelivr.net/npm/rollup-web@4.5.3/dist/plugins/postcss.js"
 );
 // 导入各种插件
 const [{ default: json }, { babelCore }] = await PluginLoader.loads(
@@ -26,9 +26,12 @@ console.log("加载插件完成");
 const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);
 console.log(isDev);
 
-const CDN = globalThis.location.origin + "/";
+const Root = new URL("../", location.href).toString();
+
+console.log("Root ", Root);
 const RollupConfig = {
     plugins: [
+        // 自定义实现一个 SVG Plugin
         {
             name: "svg",
             resolveId(thisFile) {
@@ -53,12 +56,21 @@ const RollupConfig = {
                 }
             },
         },
+        // 使用 添加 import 头的方式可以实现对象注入
         {
             name: "auto-import-mdx",
             transform(code, id) {
                 if (id.endsWith(".mdx")) {
+                    const hasCode =
+                        code.startsWith("import") || code.startsWith("export");
+                    // 正文与源代码需要有换行进行分割
                     const result =
-                        'import {Embed} from "/src/Support/Embed.tsx";\r\n\r\n' +
+                        `import {Embed} from '${new URL(
+                            "./src/Support/Embed.tsx",
+                            Root
+                        ).toString()}';
+                        ` +
+                        (hasCode ? "" : "\n") +
                         code;
                     return result;
                 }
@@ -83,6 +95,7 @@ const RollupConfig = {
                 // console.log("%cbabel ==> " + id, "color:blue");
             },
         }),
+        postcss({}),
         sky_module({
             cdn: "https://cdn.skypack.dev/",
             rename: {
@@ -91,13 +104,12 @@ const RollupConfig = {
                 "solid-js/store": "solid-js@1.4.2/store",
             },
         }),
-        postcss({}),
     ],
 };
 
 const compiler = new Compiler(RollupConfig, {
     // 用于为相对地址添加绝对地址
-    root: CDN,
+    root: Root,
     autoBuildFetchHook: false,
     // 为没有后缀名的 url 添加后缀名
     extensions: [".tsx", ".ts", ".mdx", ".js", ".json", ".css"],
