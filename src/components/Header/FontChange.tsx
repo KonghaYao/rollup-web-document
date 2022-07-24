@@ -5,7 +5,7 @@ import { SymbolParameter } from "../../Icon";
 import { Select } from "./Selected";
 import { loadLink } from "../../utils/loadScript";
 const defaultFont =
-    '-apple-system,system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial!important;';
+    '-apple-system,system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,"Microsoft YaHei"';
 const fontStore = [
     {
         label: "思源宋体",
