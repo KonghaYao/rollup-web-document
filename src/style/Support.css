@@ -1,5 +1,6 @@
 .geDiagramContainer {
-    height: 95%;
+    /* height: 95%; */
+    width: 90%;
 }
 /* 修正 drawio 的显示问题 */
 body img[border="0"] + div {

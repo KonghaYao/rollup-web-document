@@ -31,7 +31,7 @@ export const Embed: Component<{
                 )}
             >
                 <ViewBox
-                    fallback={<div>白屏</div>}
+                    fallback={<Loading message="预加载窗口"></Loading>}
                     autoheight={props.autoheight}
                 >
                     <Suspense
@@ -54,7 +54,7 @@ const ViewBox: Component<{
     let io: IntersectionObserver;
     let root: HTMLDivElement;
     const init = () => {
-        console.log("异步加载文件数据");
+        console.log("Embed Plugin Support: ");
         setInit(true);
     };
     onMount(() => {
@@ -67,7 +67,7 @@ const ViewBox: Component<{
                 ) {
                     setTimeout(() => {
                         init();
-                    }, 300);
+                    }, 500);
                     io.unobserve(entries[0].target);
                 }
             },
@@ -89,7 +89,7 @@ const ViewBox: Component<{
             ref={root!}
         >
             <div class="p-2 bg-blue-400 stroke-white h-full flex flex-col">
-                <Refresh class="" onclick={() => {}}></Refresh>
+                <Refresh onclick={() => {}}></Refresh>
             </div>
             <Show when={isInit()} fallback={props.fallback}>
                 {props.children}

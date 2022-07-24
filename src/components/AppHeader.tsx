@@ -11,7 +11,7 @@ export const AppHeader: Component<{}> = () => {
         <header className="flex w-full justify-center bg-white border-b-2 border-red-200 px-4">
             <Link href="/">
                 <div className="w-full px-8 py-2 ">
-                    <div className="text-2xl">Doc of Rollup-Web</div>
+                    <div className="text-2xl font-bold">Doc of Rollup-Web</div>
                 </div>
             </Link>
             <aside class="flex items-center mx-4">
