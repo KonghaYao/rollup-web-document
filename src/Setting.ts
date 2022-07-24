@@ -8,6 +8,7 @@ const result = localStorage.getItem("document_setting");
 if (result) {
     Object.assign(origin, JSON.parse(result));
 }
+console.log(origin);
 export const Setting = new Proxy(origin, {
     set(target, key, value) {
         const result = Reflect.set(target, key, value);

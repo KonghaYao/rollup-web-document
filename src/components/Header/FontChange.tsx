@@ -1,17 +1,31 @@
 import { Component, createSignal } from "solid-js";
 import { Setting } from "../../Setting";
 import { SymbolParameter } from "../../Icon";
-import { JSX } from "solid-js";
+
 import { Select } from "./Selected";
+import { loadLink } from "../../utils/loadScript";
 const defaultFont =
     '-apple-system,system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial!important;';
-
+const fontStore = [
+    {
+        label: "思源宋体",
+        value: "Noto Serif SC",
+    },
+    { label: "默认黑体", value: defaultFont },
+    {
+        label: "江西拙楷",
+        value: "'江西拙楷2.0'",
+        src: "https://fastly.jsdelivr.net/gh/KonghaYao/chinese-free-web-font-storage/build/江西拙楷2.0/result.css",
+    },
+    {
+        label: "霞鹜文楷",
+        value: "LXGWWenKai",
+        src: "https://fastly.jsdelivr.net/gh/KonghaYao/chinese-free-web-font-storage/build/LXGWWenKai-Regular/result.css",
+    },
+];
 export const FontChange: Component<{}> = () => {
     const [fonts, setFont] = createSignal(
-        [
-            { label: "思源宋体", value: "Noto Serif SC" },
-            { label: "默认黑体", value: defaultFont },
-        ].map((i) => {
+        fontStore.map((i) => {
             return { ...i, selected: Setting.font === i.value };
         })
     );
@@ -19,13 +33,18 @@ export const FontChange: Component<{}> = () => {
         Setting.font = newFont;
         setFont((languages) => {
             return languages.map((i) => {
+                if (Setting.font === i.value) {
+                    if (i.src) loadLink(i.src);
+                    return { ...i, selected: true };
+                }
                 return {
                     ...i,
-                    selected: Setting.font === i.value,
+                    selected: false,
                 };
             });
         });
     };
+    changeFont(Setting.font);
     return (
         <Select
             data={fonts()}

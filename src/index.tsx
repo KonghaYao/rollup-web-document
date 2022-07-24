@@ -11,7 +11,7 @@ const App = () => {
     });
 
     return (
-        <section className="h-screen flex flex-col relative font-song select-none ">
+        <section className="h-screen flex flex-col relative  select-none ">
             <AppHeader></AppHeader>
             <main className="flex-grow bg-gray-50  p-4  overflow-auto flex justify-center">
                 <Route

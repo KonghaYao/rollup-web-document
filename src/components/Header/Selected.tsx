@@ -1,10 +1,11 @@
 import { Component, For } from "solid-js";
 
 type ItemType = { selected?: boolean; label: string; value: any };
-export const Select: Component<{
-    data: ItemType[];
-    onclick: (item: ItemType) => void;
-}> = (props) => {
+interface Props<T extends ItemType = ItemType> {
+    data: T[];
+    onclick: (item: T) => void;
+}
+export const Select: Component<Props> = (props) => {
     return (
         <sl-dropdown class="z-10">
             {props.children}

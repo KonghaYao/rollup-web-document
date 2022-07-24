@@ -23,7 +23,7 @@ export const LanguageChange: Component<{}> = () => {
         <Select
             data={languages()}
             onclick={(item) => {
-                changeLanguage(item);
+                changeLanguage(item.value);
             }}
         >
             <div slot="trigger" className="w-full px-4  ">

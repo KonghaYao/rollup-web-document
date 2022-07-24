@@ -3,8 +3,6 @@
 
 :root {
     --Font: "Noto Serif SC";
-}
-.font-song {
     font-family: var(--Font);
 }
 
