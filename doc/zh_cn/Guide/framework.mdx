@@ -5,9 +5,7 @@ export { pagination };
 
 Rollup-Web 不单单只是 Rollup 的浏览器版本，它还对 Worker、 iframe 环境进行了适配，提供了一整套服务于浏览器的 plugins，可以实现一体化的文件打包执行。
 
-## Rollup-Web 执行过程
-
-Rollup-Web 的执行过程大体如下图所示：
+## Rollup-Web
 
 <Embed src="/doc/zh_cn/Guide/assets/implementation.drawio" autoheight></Embed>
 
@@ -43,8 +41,9 @@ Rollup-Web 打包线程是专门为打包复杂代码所开设的线程，这个
 
 Rollup-Web 没有像 Vite 一样包装 Rollup 的插件，我们直接采用了 Rollup 的插件机制，并在此之上进行各种转化操作。所以，那你会编写 Rollup 插件，就会编写 Rollup-Web 插件。
 
+> Rollup-Web 的插件很多时候是转化某些文件为可执行文件的，所以，不需要太多的 Nodejs api。（如 replace、json、commonjs 等）
+>
 > 小知识：当插件本身没有涉及到太多 Nodejs 的原生功能的时候，可以直接在浏览器端使用 ESM.sh 获取！
-> 所以，Rollup-Web 是支持部分的 Rollup 插件的。（如 replace、json、commonjs 等）
 
 ## 文件管理设计
 
@@ -52,9 +51,23 @@ Rollup-Web 没有像 Vite 一样包装 Rollup 的插件，我们直接采用了 
 
 Rollup-Web 采用了唯一的 URL 对应源代码的形式进行资源管理。同时，我们采用了可替换的源代码获取方式（代码名称为 Fetcher），所以可以适配多种不同的应用场景。
 
-### 缓存文件设计
+### 多级缓存设计
 
-我们在 Rollup-Web 系统中提供了缓存机制保证部署展示时速度超级快。缓存机制的主要底层为 IndexDB，我们使用了 localforage 这个库进行便捷的操作。在其上，我们制作了一个插件管理系统，保证我们的缓存的可扩展性。
+我们在 Rollup-Web 系统中提供了缓存机制来保证部署展示时速度超级快。浏览器本身对于文件具有强缓存，在其上，我们制作了一个插件管理系统，保证我们的文件访问速度。
+
+#### 缓存层级
+
+<Embed src="/doc/zh_cn/Guide/assets/CacheSystem.drawio" autoheight></Embed>
+
+1. Memory Cache：即时缓存，即当直接向底层进行网络请求时，我们进行了 JS 的内存缓存，文件都在 Compiler 线程。
+
+2. Local Cache： 本地缓存机制的主要底层为 IndexDB，我们使用了 localforage 这个库进行便捷的操作。这个缓存是持久的，但是需要手动开启。
+
+3. Browser Cache：如果上面两层缓存失效，导致 Compiler 线程需要请求 CDN Module，那么会触发浏览器的强缓存，文件将会在几十毫秒内传入 Compiler。
+
+4. Remote Services：如果三层缓存失效，那么将会直接请求服务器进行源代码下载，速度就取决于服务器响应了。
+
+#### 缓存种类
 
 1. ExtensionsCache：后缀名缓存，Nodejs 中可以使用无后缀名的默认写法，但是 ESM 不行，所以需要后缀名自动识别。
 
@@ -62,7 +75,7 @@ Rollup-Web 采用了唯一的 URL 对应源代码的形式进行资源管理。�
 
 ### 模块文件下载
 
-对于原本应该处于 node_modules 中对应的模块，这些年已经有 CDN 在进行打包操作了，所以我们需要的是直接更改模块裸导入为 CDN 提供的 URL！这种解决方案我们称之为 CDN Module。
+对于原本应该处于 node_modules 中对应的模块，这些年已经有 CDN 在进行打包操作了，所以我们需要的是直接更改模块裸导入为 CDN 提供的 URL！这种解决方案我们称之为 **CDN Module**。
 
 这里介绍一些可以进行 ESM 打包的 CDN 提供商。
 
@@ -70,4 +83,8 @@ Rollup-Web 采用了唯一的 URL 对应源代码的形式进行资源管理。�
 
 2. [ESM.run](https://www.jsdelivr.com/esm)：这是 jsdelivr 新创建的项目，可以在浏览器端直接采用 CDN Module，其底层机制为 Rollup 打包源代码，项目仍然处于 Development，所以对于某些代码的编译效果不太好。
 
-3. [ESM.sh](https://esm.sh/)：底层采用 ESBuild 进行打包，所以对于一些 Nodejs 的功能会做补充，使得我们可以使用。(babel 的一系列插件就是通过这个 CDN 导入的)
+3. [ESM.sh](https://esm.sh/)：底层采用 ESBuild 进行打包，所以对于一些 Nodejs 的功能会做补充，使得库在浏览器环境可以被使用。
+
+> (babel 的一系列插件就是通过这个 CDN 导入的! )
+>
+> 原本是用于 Deno 的，Deno 的实现目标是浏览器环境，所以大致也可以在浏览器里面。
