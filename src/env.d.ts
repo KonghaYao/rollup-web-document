@@ -2,6 +2,10 @@ declare module "https://" {
     const a: any;
     export default a;
 }
+declare module "*.svg" {
+    const a: string;
+    export default a;
+}
 declare module "xy-ui/*" {
     const a: any;
     export default a;
