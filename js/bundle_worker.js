@@ -110,7 +110,6 @@ const RollupConfig = {
 const compiler = new Compiler(RollupConfig, {
     // 用于为相对地址添加绝对地址
     root: Root,
-    autoBuildFetchHook: false,
     // 为没有后缀名的 url 添加后缀名
     extensions: [".tsx", ".ts", ".mdx", ".js", ".json", ".css"],
     // useDataCache: {

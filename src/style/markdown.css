@@ -11,6 +11,11 @@
     background-color: #f9fafb;
     font-size: 0.9em;
 }
+.markdown-body blockquote {
+    color-scheme: dark;
+    background-color: #090c10;
+    font-size: 0.9em;
+}
 .markdown-body ol li {
     list-style-type: decimal;
 }

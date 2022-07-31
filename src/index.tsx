@@ -11,9 +11,9 @@ const App = () => {
     });
 
     return (
-        <section className="h-screen flex flex-col relative  select-none ">
+        <section className="h-screen flex flex-col relative  select-none dark:bg-slate-900 dark:text-slate-50">
             <AppHeader></AppHeader>
-            <main className="flex-grow bg-gray-50  p-4  overflow-auto flex justify-center">
+            <main className="flex-grow bg-gray-50 dark:bg-slate-800 p-4  overflow-auto flex justify-center">
                 <Route
                     path={"/article/:language/***" || /article\/(.*)/}
                     element={PageWrapper}

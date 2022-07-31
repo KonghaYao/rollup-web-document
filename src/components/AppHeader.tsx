@@ -8,7 +8,7 @@ import { FontChange } from "./Header/FontChange";
 import { LanguageChange } from "./Header/LanguageChange";
 export const AppHeader: Component<{}> = () => {
     return (
-        <header className="flex w-full justify-center bg-white border-b-2 border-red-200 px-4">
+        <header className="flex w-full justify-center bg-white dark:bg-slate-900 dark:text-gray-100 border-b-2 border-red-200 px-4">
             <Link href="/">
                 <div className="w-full px-8 py-2 ">
                     <div className="text-2xl font-bold">Doc of Rollup-Web</div>

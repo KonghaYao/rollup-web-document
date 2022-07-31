@@ -1,6 +1,6 @@
 [
     {
-        "name": "Getting Started",
+        "name": "开始阅读",
         "children": [
             {
                 "name": "快速开始",
@@ -13,8 +13,13 @@
         ]
     },
     {
-        "name": "Getting Started",
+        "name": "基本使用",
         "link": "/..Guide/index",
-        "children": []
+        "children": [
+            {
+                "name": "多线程启动",
+                "link": "/Guide/MultiThreadBegin.mdx"
+            }
+        ]
     }
 ]

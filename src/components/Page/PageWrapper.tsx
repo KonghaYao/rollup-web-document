@@ -16,7 +16,7 @@ export const PageWrapper: RouterComponent<{}> = (props) => {
         highlightHub.off("highlight", setReading);
     });
     return (
-        <div class=" w-full bg-white p-4 rounded-lg select-text flex">
+        <div class=" w-full p-4 rounded-lg select-text flex dark:bg-slate-900">
             <Show when={RecommendVisible}>
                 <RecommendReading Pagination={Pagination()}></RecommendReading>
             </Show>

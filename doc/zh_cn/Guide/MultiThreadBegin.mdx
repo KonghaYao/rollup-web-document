@@ -1,0 +1,116 @@
+import pagination from "./index.json";
+export { pagination };
+
+# 多线程启动
+
+多线程启动是官方推荐的使用方式，这种方式可以将打包计算投掷到另外一个 Worker 中进行，这样主线程的操作会顺畅很多。
+
+## 开始
+
+1. 主线程构建
+
+```ts
+import { Evaluator } from "rollup-web"; // rollup-web 应该替换为相应的 CDN 的
+
+const Eval = new Evaluator();
+
+// 如果你还没有 Compiler Worker, 那么就直接使用 useWorker 启动一个线程
+await Eval.useWorker("./js/bundle_worker.js");
+
+//
+await Eval.createEnv({});
+await Eval.evaluate("./src/index.tsx");
+```
+
+2. 打包线程代码 (./js/bundle_worker.js)
+
+```ts
+// 这是在一个 Web Worker 里面，所以没有裸模块导入，请自行替换 CDN
+import { Compiler, sky_module, PluginLoader } from "rollup-web/dist/index.js";
+
+// 推荐的 Typescript babel 解析模块
+import ts from "https://esm.sh/@babel/preset-typescript";
+
+// 如果你觉得 import 需要写 CDN 路径太烦，那么可以试试下面这种方式
+const [{ default: json }, { babelCore }] = await PluginLoader.loads(
+    "plugin-json",
+    "babel.core"
+);
+
+const RollupConfig = {
+    plugins: [
+        json(),
+
+        // Babel! 无敌的转化器，大多数 JS 都可以使用了!
+        babelCore({
+            babelrc: {
+                presets: [ts, SolidPresets],
+            },
+            extensions: [".tsx", ".mdx", ".ts"],
+        }),
+
+        // 如果你的裸模块导入没有被识别到，那么这个插件可以直接添加 CDN 路径
+        sky_module({
+            cdn: "https://cdn.skypack.dev/",
+            // 如果要指定版本，可以这样
+            rename: {
+                "solid-js": "solid-js@1.4.2",
+                "solid-js/web": "solid-js@1.4.2/web",
+                "solid-js/store": "solid-js@1.4.2/store",
+            },
+        }),
+    ],
+};
+
+const compiler = new Compiler(RollupConfig, {
+    // 用于为相对地址添加绝对地址, 因为 Web Worker 中的路径与主线程不一致
+    root: location.href,
+
+    // 为没有后缀名的 url 添加后缀名
+    extensions: [".tsx", ".ts", ".mdx", ".js", ".json", ".css"],
+
+    // 如果你需要 缓存，那么写一个对象即可开启
+    useDataCache: {},
+});
+
+// 向主线程汇报完成初始化
+compiler.useWorker();
+```
+
+## Evaluator 的初始化
+
+Evaluator 是代码的运行环境，我们将会重写环境中的某些函数和值，使得我们可以使用编译后的代码。
+
+1. Evaluator.useWorker(info: WorkerPath | MessagePort)
+
+> 初始化 Evaluator 与 Compiler Worker 的链接，使得 Evaluator 可以直接编译文件
+
+2. Evaluator.createEnv( config )
+
+> Evaluator 通过 createEnv 构建一个运行环境
+
+    1. config.root：配置解析的 root，这个 root 高于 Compiler Worker 的 root
+
+3. Evalutor.import( PathOfYourCode )
+
+> 直接 import 你的源代码，只要 Compiler Worker 能够解析，代码就能够运行了!
+
+## Compiler Worker
+
+1. Compiler Plugins
+
+> Compiler 插件是标准的 Rollup 插件，建议直接使用我们官方提供的插件。详见插件章节。
+
+2. new Compiler( RollupOptions, ModuleConfig);
+
+    1. RollupOptions: Rollup 的配置项，除了 input 和 output 被覆盖外，plugins、external 都是可以使用的。
+
+    2. ModuleConfig.extensions (string[])：解析代码里面没有后缀名的 Nodejs 式导入。
+
+    3. ModuleConfig.root：统一配置给 Evaluator 的默认 root。( 如果处于 Web Worker 中，可能需要配置才能使用 )
+
+    4. ModuleConfig.cache：缓存配置项，详见缓存章节。
+
+    5. ModuleConfig.extraBundle ( string[] )：将会使用 picomatch 进行匹配，允许匹配到的路径进行打包。
+
+    6. ModuleConfig.adapter：特殊的文件加载器，默认是 fetch 请求，你也可以自己转接到 Indexed 实现完全本地化。

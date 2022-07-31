@@ -75,7 +75,7 @@ Rollup-Web 采用了唯一的 URL 对应源代码的形式进行资源管理。�
 
 ### 模块文件下载
 
-对于原本应该处于 node_modules 中对应的模块，这些年已经有 CDN 在进行打包操作了，所以我们需要的是直接更改模块裸导入为 CDN 提供的 URL！这种解决方案我们称之为 **CDN Module**。
+对于原本应该处于 node_modules 中对应的模块，这些年已经有 CDN 在进行 ESM 打包服务了，所以我们需要的是直接更改模块裸导入为 CDN 提供的 URL！这种解决方案我们称之为 **CDN Module**。就像是 Deno 一样，我们也可以在浏览器直接使用 url 作为模块路径。
 
 这里介绍一些可以进行 ESM 打包的 CDN 提供商。
 
@@ -83,8 +83,6 @@ Rollup-Web 采用了唯一的 URL 对应源代码的形式进行资源管理。�
 
 2. [ESM.run](https://www.jsdelivr.com/esm)：这是 jsdelivr 新创建的项目，可以在浏览器端直接采用 CDN Module，其底层机制为 Rollup 打包源代码，项目仍然处于 Development，所以对于某些代码的编译效果不太好。
 
-3. [ESM.sh](https://esm.sh/)：底层采用 ESBuild 进行打包，所以对于一些 Nodejs 的功能会做补充，使得库在浏览器环境可以被使用。
+3. [ESM.sh](https://esm.sh/)：底层采用 ESBuild 进行打包，所以对于一些 Nodejs 的功能会做补充，使得库在浏览器环境可以被使用。这个网站本来是提供 Deno 的插件的，Deno 的实现目标是浏览器环境，所以大部分都可以使用。
 
 > (babel 的一系列插件就是通过这个 CDN 导入的! )
->
-> 原本是用于 Deno 的，Deno 的实现目标是浏览器环境，所以大致也可以在浏览器里面。
