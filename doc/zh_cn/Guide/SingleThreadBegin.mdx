@@ -1,0 +1,47 @@
+import pagination from "./index.json";
+export { pagination };
+
+# 单线程启动
+
+单线程启动也是可以的，只是代码需要小幅度修改。
+
+> 经过精心设计，两种方法都可以实现 Compiler 与 Evaluator 的链接，并且可以快速切换
+
+1. Evaluator 构建
+
+```diff
+import { Evaluator } from "rollup-web"; // rollup-web 应该替换为相应的 CDN 的
++ import {compiler} from "path-of-compiler";
+const Eval = new Evaluator();
+
+- // 如果你还没有 Compiler Worker, 那么就直接使用 useWorker 启动一个线程
+- await Eval.useWorker("./js/bundle_worker.js");
+
+
+await Eval.createEnv({
++  Compiler:compiler
+});
+await Eval.evaluate("./src/index.tsx");
+```
+
+2. Compiler (./js/bundle_worker.js)
+
+```diff
+// 这是在一个 Web Worker 里面，所以没有裸模块导入，请自行替换 CDN
+import { Compiler, sky_module, PluginLoader } from "rollup-web/dist/index.js";
+
+const compiler = new Compiler(RollupConfig, {
+    // 用于为相对地址添加绝对地址, 因为 Web Worker 中的路径与主线程不一致
+    root: location.href,
+
+    // 为没有后缀名的 url 添加后缀名
+    extensions: [".tsx", ".ts", ".mdx", ".js", ".json", ".css"],
+
+    // 如果你需要 缓存，那么写一个对象即可开启
+    useDataCache: {},
+});
+
+- // 向主线程汇报完成初始化
+- compiler.useWorker();
+export { compiler };
+```

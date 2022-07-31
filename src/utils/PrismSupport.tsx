@@ -1,6 +1,7 @@
 import { loadLink, loadScript } from "./loadScript";
 import { NPM } from "../global";
 import { useGlobal } from "./useGlobal";
+import { isDark } from "./isDark";
 
 /* 对这个元素下面的代码元素进行高亮 */
 export const PrismSupport = async (el: HTMLElement) => {
@@ -10,9 +11,16 @@ export const PrismSupport = async (el: HTMLElement) => {
         await loadScript(
             NPM + "prismjs/plugins/autoloader/prism-autoloader.min.js"
         );
-        await loadLink(
-            NPM + "prism-themes@1.9.0/themes/prism-one-light.min.css"
-        );
+
+        if (isDark()) {
+            await loadLink(
+                NPM + "prism-themes@1.9.0/themes/prism-atom-dark.min.css"
+            );
+        } else {
+            await loadLink(
+                NPM + "prism-themes@1.9.0/themes/prism-one-light.min.css"
+            );
+        }
         Prism = useGlobal<any>("Prism");
         Prism.plugins.autoloader.languages_path = NPM + "prismjs/components/";
         Prism.manual = true;

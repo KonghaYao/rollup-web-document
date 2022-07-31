@@ -19,6 +19,10 @@
             {
                 "name": "多线程启动",
                 "link": "/Guide/MultiThreadBegin.mdx"
+            },
+            {
+                "name": "单线程启动",
+                "link": "/Guide/SingleThreadBegin.mdx"
             }
         ]
     }
