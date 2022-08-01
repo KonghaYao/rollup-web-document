@@ -1,0 +1,36 @@
+import pagination from "../index.json";
+export { pagination };
+
+# 插件系统
+
+Rollup-Web 的插件系统完全基于 Rollup，可以兼容 Rollup 的众多插件。如果你会编写 Rollup 插件，那么对你来说插件可以随便使用。
+
+## 使用插件
+
+我们在使用 Rollup-Web 时，一般使用官方提供的插件即可，并不需要进行自行操作。下面是一个简单示例。
+
+```ts
+import { babelCore } from "rollup-web/dist/plugins/babel.core.js";
+import { vue3 } from "rollup-web/dist/plugins/vue3.js";
+import { wasm } from "rollup-web/dist/plugins/wasm.js";
+
+const rollupOptions = { plugins: [babelCore(), vue3(), wasm()] };
+
+new Compiler(rollupOptions, otherSetting);
+```
+
+## 编写插件
+
+我们在遇到一些特殊情况的时候可以通过插件系统直接获取到内部的参数进行查看，这样就方便了我们对文件进行查看和代码转换。
+
+> 这些操作都在 [Rollup](https://rollupjs.org/guide/en/#plugins-overview) 文档里面有详细的描写。
+
+```ts
+const MyPlugins = {
+    resolveId(thisFile) {
+        if (thisFile.endsWith(".vue")) {
+            console.log(thisFile);
+        }
+    },
+};
+```
