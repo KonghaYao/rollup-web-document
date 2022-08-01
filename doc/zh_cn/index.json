@@ -33,12 +33,20 @@
                 "link": "/Plugins/index.mdx"
             },
             {
+                "name": "sky_module",
+                "link": "/Plugins/sky_module.mdx"
+            },
+            {
                 "name": "Babel",
                 "link": "/Plugins/babelCore.mdx"
             },
             {
                 "name": "Vue3",
                 "link": "/Plugins/vue3.mdx"
+            },
+            {
+                "name": "WebAssembly",
+                "link": "/Plugins/wasm.mdx"
             }
         ]
     }

@@ -1,0 +1,26 @@
+import pagination from "../index.json";
+export { pagination };
+
+# Web Worker 支持
+
+是的，我们支持编译 Worker！
+
+[x] 专用线程 （module 和 classic）
+[ ] Shared Worker
+
+## 基础使用
+
+```ts
+import { worker } from "rollup-web/dist/plugins/worker.js";
+const plugins = [worker()];
+```
+
+## Worker 的相关信息
+
+1. module 模式和 classic 模式的 Worker
+
+在 module 模式的 Worker 中你可以使用 ESM 的方式导入库，但是在 classic 的方式不行。现在对 module Worker 的支持度较低，但是我们也进行了支持。
+
+1. Worker 里面的 location
+
+> 我们对 Worker 里面的 location 进行了纠正，保证 location 得到的数据是对的，但是如果写入 location，将会发生错误。

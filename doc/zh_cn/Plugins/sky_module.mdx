@@ -1,0 +1,28 @@
+import pagination from "../index.json";
+export { pagination };
+
+# CDN Module 自动解析支持
+
+sky_module 可以让你的裸导入模块直接解析为 CDN 位置，不再需要 ImportMap！它是一个内置的函数，所以你可以直接从中 Rollup-Web 导入。
+
+## 基础使用
+
+```ts
+import { sky_module } from "rollup-web";
+const plugins = [
+    sky_module({
+        // 简单地使用
+        cdn: "https://cdn.skypack.dev/",
+        // 自定义导入
+        cdn: (name) => `https://fastly.jsdelivr.net/npm/${name}/+esm`,
+        rename: {
+            // rename 可以锁定版本或者是锁定位置
+            // 先 rename 然后会进行 cdn 转换
+            pinia: "pinia@2.0.11/dist/pinia.esm-browser.js",
+            "vue-router": "vue-router@4.0.12/dist/vue-router.esm-browser.js",
+            "@vue/devtools-api": "@vue/devtools-api/+esm",
+            vue: "vue@3.2.25/dist/vue.runtime.esm-browser.js",
+        },
+    }),
+];
+```
