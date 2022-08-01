@@ -5,6 +5,7 @@ import { Route, router } from "./router/index";
 import { PageWrapper } from "./components/Page/PageWrapper";
 import "./router/autoRefresh";
 import { AppHeader } from "./components/AppHeader";
+import { FirstPage } from "./FirstPage/index";
 const App = () => {
     onMount(() => {
         router.navigate(window.location.hash.slice(1));
@@ -20,7 +21,7 @@ const App = () => {
                 ></Route>
 
                 <Route path="/">
-                    <div>首页</div>
+                    <FirstPage></FirstPage>
                 </Route>
             </main>
         </section>
