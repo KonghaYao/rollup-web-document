@@ -1,0 +1,38 @@
+import pagination from "../index.json";
+export { pagination };
+
+# Wasm 支持
+
+Wasm 在浏览器端和 Node.js 端有两种不同的支持方式。Node.js 端是支持默认参数启动 Wasm 的，但是浏览器端需要配置参数。但是 Rollup-Web 可以两种模式切换！
+
+## 基础使用
+
+```ts
+import { wasm } from "rollup-web/dist/plugins/wasm.js";
+const plugins = [
+    wasm({
+        mode: "node", // "vite" 默认是 vite 模式
+    }),
+];
+```
+
+## Vite 模式与 Node 模式
+
+1. Vite 模式
+
+```js
+import init from "./example.wasm";
+
+// Vite 模式需要这样子 初始化一下参数
+init().then((instance) => {
+    instance.exports.test();
+});
+```
+
+1. Node 模式
+
+```js
+import * as wasm from "./brotli_wasm_bg.wasm";
+import { API } from "./brotli_wasm_bg.wasm";
+// wasm 即是 API
+```
