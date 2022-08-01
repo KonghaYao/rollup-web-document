@@ -1,0 +1,45 @@
+import pagination from "../index.json";
+export { pagination };
+
+# AssemblyScript 插件
+
+[AssemblyScript 官网](https://www.assemblyscript.org/)
+
+Rollup-Web 支持了 AssemblyScript 进行 WebAssembly 的编写。
+
+## 基础使用
+
+这里展示的是配合 SolidJS 进行渲染， React 也是一样的，通过 Babel 可以解析 JSX。
+
+```ts
+import { assemblyscript } from "../../dist/plugins/assemblyscript.js";
+import { wasm } from "../../dist/plugins/wasm.js";
+const config = {
+    plugins: [
+        assemblyscript({
+            // https://www.assemblyscript.org/compiler.html#configuration-file
+            asconfig: {},
+        }),
+        wasm(),
+    ],
+};
+
+// ASC 的执行需要 importMap 进行解析
+evaluator.System.extendImportMap({
+    imports: {
+        binaryen:
+            "https://fastly.jsdelivr.net/npm/binaryen@108.0.0-nightly.20220528/index.js",
+        long: "https://fastly.jsdelivr.net/npm/long@5.2.0/index.js",
+        assemblyscript:
+            "https://fastly.jsdelivr.net/npm/assemblyscript@0.20.8/dist/assemblyscript.js",
+        "assemblyscript/asc":
+            "https://fastly.jsdelivr.net/npm/assemblyscript@0.20.8/dist/asc.js",
+    },
+});
+```
+
+## AssemblyScript
+
+1. AssemblyScript 的后缀名推荐为 `.as`，保证其和 `.ts` 没有冲突。
+
+2. AssemblyScript 本质上是编译为 WebAssembly，所以需要 wasm 插件。

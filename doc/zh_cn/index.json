@@ -63,6 +63,10 @@
             {
                 "name": "MDX",
                 "link": "/Plugins/mdx.mdx"
+            },
+            {
+                "name": "AssemblyScript",
+                "link": "/Plugins/assemblyScript.mdx"
             }
         ]
     }
