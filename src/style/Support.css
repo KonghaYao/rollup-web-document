@@ -7,3 +7,7 @@ body img[border="0"] + div {
     display: flex !important;
     opacity: 1 !important;
 }
+
+:root {
+    color-scheme: "light";
+}

@@ -9,7 +9,7 @@ export const Select: Component<Props> = (props) => {
     return (
         <sl-dropdown class="z-10">
             {props.children}
-            <main class=" bg-white shadow-lg rounded-md mx-4 my-1 flex flex-col overflow-hidden w-24 ">
+            <main class=" bg-white dark:bg-slate-800 shadow-lg rounded-md mx-4 my-1 flex flex-col overflow-hidden w-24 ">
                 <For each={props.data}>
                     {(item) => {
                         return (
@@ -17,6 +17,7 @@ export const Select: Component<Props> = (props) => {
                                 class="cursor-pointer px-4 py-2  whitespace-nowrap flex-none"
                                 classList={{
                                     "bg-gray-50": item.selected,
+                                    "dark:bg-slate-900": item.selected,
                                     "text-lime-400": item.selected,
                                 }}
                                 onclick={() => props.onclick(item)}
