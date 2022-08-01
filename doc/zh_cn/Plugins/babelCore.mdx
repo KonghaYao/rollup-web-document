@@ -1,10 +1,34 @@
 import pagination from "../index.json";
 export { pagination };
 
-# babelCore 插件
+# babelCore
 
-Rollup-Web 与 Babel 进行沟通的插件。你可以在浏览器里面使用 Babel 相关的转化系统，我们已经帮你封装好了。
+Rollup-Web 与 Babel 进行沟通的插件。你可以在浏览器里面使用 Babel 相关的转化系统，我们已经帮你封装好了。通过 Babel 你可以支持 Typescript 和 JSX 的编译。
+
+## 基础使用
 
 ```ts
-
+import { babelCore } from "rollup-web/dist/plugins/babel.core.js";
+import ts from "https://esm.sh/@babel/preset-typescript";
+const plugins = [
+    babelCore({
+        // 没有文件系统的话，直接在这里写配置文件
+        babelrc: {
+            presets: [ts],
+        },
+        // 后缀名过滤，如果你使用了 ts，tsx，jsx 等特殊后缀名，请写上
+        extensions: [".ts"],
+        log(id) {
+            console.log("%cBabel typescript > " + id, "color:orange");
+        },
+    }),
+];
 ```
+
+## Babel 广大的插件生态
+
+Babel 是一个非常了不起的系统，它提供了各种 JS 的转换操作，可以让我们运行非常多特殊的代码。
+
+在 Rollup-Web 中，我们使用 CDN 帮助我们对 Babel 的插件进行转化。原因是 Babel 是 Node.js 端的生态工具，所以会有一些 Node.js 的 API。但是别担心，由于 Babel 的函数式划分得非常好，非常多插件都是可以直接通过 CDN 载入的。
+
+> CDN 推荐: ESM.sh 这个 CDN 最适合转化 Babel 插件， https://esm.sh/@babel/preset-typescript 既简单又好记，所以使用它就可以了。

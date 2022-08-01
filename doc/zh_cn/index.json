@@ -31,6 +31,14 @@
             {
                 "name": "插件介绍",
                 "link": "/Plugins/index.mdx"
+            },
+            {
+                "name": "Babel",
+                "link": "/Plugins/babelCore.mdx"
+            },
+            {
+                "name": "Vue3",
+                "link": "/Plugins/vue3.mdx"
             }
         ]
     }

@@ -1,0 +1,23 @@
+import pagination from "../index.json";
+export { pagination };
+
+# Vue3 插件
+
+Rollup-Web 编译 Vue3 的插件，对流程进行了优化，使得 Vue3 可以在浏览器上编译 Vue 文件!
+
+## 基础使用
+
+```ts
+import { vue3 } from "rollup-web/dist/plugins/vue3.js";
+const plugins = [
+    vue3({
+        log(id, code) {
+            console.log(id, code);
+        },
+    }),
+];
+```
+
+## Vue3 中的其他语言编译
+
+Vue3 插件帮助我们将 Vue 文件转化为 JS 的一种形式，但是像 Typescript 和 Less 等特殊的语言将会交由 Rollup-Web 的其他插件进行转化！
