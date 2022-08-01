@@ -59,6 +59,10 @@
             {
                 "name": "SWC",
                 "link": "/Plugins/swc.mdx"
+            },
+            {
+                "name": "MDX",
+                "link": "/Plugins/mdx.mdx"
             }
         ]
     }

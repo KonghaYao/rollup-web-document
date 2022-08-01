@@ -1,0 +1,32 @@
+import pagination from "../index.json";
+export { pagination };
+
+# MDX 插件
+
+Rollup-Web 配置 MDX 需要 Babel 和 MDX 插件同时操作!
+
+## 基础使用
+
+这里展示的是配合 SolidJS 进行渲染， React 也是一样的，通过 Babel 可以解析 JSX。
+
+```ts
+import { mdx } from "rollup-web/dist/plugins/mdx.js";
+import { babelCore } from "rollup-web/dist/plugins/babel.core.js";
+const plugins = [
+    mdx({
+        options: {
+            jsxImportSource: "solid-jsx",
+        },
+    }),
+    babelCore({
+        babelrc: {
+            presets: [SolidPresets],
+        },
+        extensions: [".mdx", ".ts"],
+    }),
+];
+```
+
+## MDX 的渲染流程
+
+MDX 将 MDX 文件的文本转化为 JSX 的渲染代码，在 React 或者 Solid JS 这些渲染语言的帮助下展示内容。
