@@ -1,34 +1,23 @@
 // ! 在 worker 中不能够使用 import map
-// import {
-//     Compiler,
-//     sky_module,
-//     PluginLoader,
-// } from "../rollup-web/dist/index.js";
 import {
     Compiler,
     sky_module,
-    PluginLoader,
-} from "https://cdn.jsdelivr.net/npm/rollup-web@4.5.3/dist/index.js";
-
+} from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/index.js";
 import ts from "https://esm.sh/@babel/preset-typescript";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
-import { mdx } from "https://cdn.jsdelivr.net/npm/rollup-web@4.5.1/dist/plugins/mdx.js";
+import { mdx } from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/plugins/mdx.js";
+import { babelCore } from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/plugins/babel.core.js";
 const { postcss } = await import(
-    "https://cdn.jsdelivr.net/npm/rollup-web@4.5.3/dist/plugins/postcss.js"
+    "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/plugins/postcss.js"
 );
-// 导入各种插件
-const [{ default: json }, { babelCore }] = await PluginLoader.loads(
-    "plugin-json",
-    "babel.core"
-);
+import json from "https://esm.sh/@rollup/plugin-json";
 
 console.log("加载插件完成");
 const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);
 console.log(isDev);
 
 const Root = new URL("../", location.href).toString();
-
-console.log("Root ", Root);
+console.log(Root);
 const RollupConfig = {
     plugins: [
         // 自定义实现一个 SVG Plugin
@@ -113,12 +102,11 @@ const compiler = new Compiler(RollupConfig, {
     root: Root,
     // 为没有后缀名的 url 添加后缀名
     extensions: [".tsx", ".ts", ".mdx", ".js", ".json", ".css"],
-    // useDataCache: {
-    //     ignore: isDev
-    //         ? ["src/pages/*.tsx", "script/PageList.json"].map((i) => CDN + i)
-    //         : [],
-    //     maxAge: 24 * 60 * 60,
-    // },
+    cache: {
+        ignore: isDev ? ["doc/*/**.mdx"].map((i) => Root + i) : [],
+        maxAge: 24 * 60 * 60,
+    },
+    useDataCache: {},
     extraBundle: [],
 });
 compiler.useWorker();

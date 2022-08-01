@@ -1,4 +1,4 @@
-import { Evaluator } from "rollup-web";
+import { Evaluator } from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/index.js";
 
 const Eval = new Evaluator();
 console.time("Worker构建时间");
