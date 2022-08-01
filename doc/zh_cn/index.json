@@ -41,12 +41,24 @@
                 "link": "/Plugins/babelCore.mdx"
             },
             {
+                "name": "PostCSS 及 Preprocess",
+                "link": "/Plugins/postcss.mdx"
+            },
+            {
                 "name": "Vue3",
                 "link": "/Plugins/vue3.mdx"
             },
             {
                 "name": "WebAssembly",
                 "link": "/Plugins/wasm.mdx"
+            },
+            {
+                "name": "Web Worker",
+                "link": "/Plugins/worker.mdx"
+            },
+            {
+                "name": "SWC",
+                "link": "/Plugins/swc.mdx"
             }
         ]
     }

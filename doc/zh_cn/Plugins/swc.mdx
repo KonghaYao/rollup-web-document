@@ -1,0 +1,28 @@
+import pagination from "../index.json";
+export { pagination };
+
+# SWC 支持
+
+[SWC 官网](https://swc.rs/)
+
+Rollup-Web 与 SWC 进行沟通的插件。你可以在 Web 中使用基于 WebAssembly 的 SWC 的代码, SWC 相当于 Babel 的替代，在牺牲体积的情况下换取更快的编译速度。
+
+## 基础使用
+
+```ts
+import { swc } from "rollup-web/dist/plugins/swc.js";
+
+const plugins = [
+    swc({
+        swcrc: {},
+        extensions: [".ts"],
+        log(id) {
+            console.log("%cSWC typescript > " + id, "color:orange");
+        },
+    }),
+];
+```
+
+## SWC 与 Babel 的对比
+
+SWC 体量非常大，足足有 19.94 MB, 这对于 preview 功能来说还可以接受，但是如果需要速度的情况下，还是使用 Babel 吧。

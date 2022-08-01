@@ -1,0 +1,49 @@
+import pagination from "../index.json";
+export { pagination };
+
+# Postcss 支持
+
+[PostCSS 官网](https://postcss.org/)
+
+Postcss in Web! 在浏览器中编译样式文件的首选！
+
+## 基础使用
+
+```ts
+import { postcss } from "rollup-web/dist/plugins/postcss.js";
+import { less } from "rollup-web/dist/plugins/less.js";
+import { sass } from "rollup-web/dist/plugins/sass.js";
+
+const plugins = [
+    less({
+        // https://lesscss.org/usage/#using-less-in-the-browser-options
+        less: {},
+        log(id) {
+            console.warn("less ", id);
+        },
+    }),
+    sass({
+        sass: {}, // https://github.com/medialize/sass.js/blob/master/docs/api.md#libsass-compile-options
+        log(id, code) {
+            console.warn("sass ", id);
+        },
+    }),
+    postcss({
+        // 内置了 postcss-import 与 import-url 两个插件，可以不用添加了
+        plugins: [],
+        options(css, id) {
+            return { from: id, to: id };
+        },
+        log(id, code) {
+            console.warn("postcss ", id);
+        },
+        extensions: [".css", ".less", ".sass", ".scss"],
+    }),
+];
+```
+
+## PostCSS 详细
+
+1. PostCSS 插件内置了 postcss-import 和 import-url, 提供了 CSS 模块间的联系。
+
+2. Preprocess 还是要额外插件的，所以请自行配置 Less 和 Sass 插件，Postcss 则会自动帮您操作。
