@@ -25,6 +25,7 @@ const config = {
 };
 
 // ASC 的执行需要 importMap 进行解析
+// ! 可能会发生错误，如果发生了错误，请将 importMap 填入 HTML 中。
 evaluator.System.extendImportMap({
     imports: {
         binaryen:
@@ -34,6 +35,8 @@ evaluator.System.extendImportMap({
             "https://fastly.jsdelivr.net/npm/assemblyscript@0.20.8/dist/assemblyscript.js",
         "assemblyscript/asc":
             "https://fastly.jsdelivr.net/npm/assemblyscript@0.20.8/dist/asc.js",
+        "@assemblyscript/loader":
+            "https://fastly.jsdelivr.net/npm/@assemblyscript/loader@0.20.6/index.js",
     },
 });
 ```
