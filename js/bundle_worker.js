@@ -2,15 +2,16 @@
 import {
     Compiler,
     sky_module,
-} from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/index.js";
-import ts from "https://esm.sh/@babel/preset-typescript";
+} from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.6/dist/index.js";
 import SolidPresets from "https://esm.sh/babel-preset-solid@1.3.13";
-import { mdx } from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/plugins/mdx.js";
-import { babelCore } from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/plugins/babel.core.js";
+import { mdx } from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.6/dist/plugins/mdx.js";
+import { babelCore } from "https://cdn.jsdelivr.net/npm/rollup-web@4.6.6/dist/plugins/babel.core.js";
 const { postcss } = await import(
-    "https://cdn.jsdelivr.net/npm/rollup-web@4.6.2/dist/plugins/postcss.js"
+    "https://cdn.jsdelivr.net/npm/rollup-web@4.6.6/dist/plugins/postcss.js"
 );
-import json from "https://esm.sh/@rollup/plugin-json";
+
+import ts from "https://esm.sh/@babel/preset-typescript@7.18.6";
+import json from "https://esm.sh/@rollup/plugin-json@4.1.0";
 
 console.log("加载插件完成");
 const isDev = ["localhost", "127.0.0.1"].includes(globalThis.location.hostname);
@@ -92,6 +93,8 @@ const RollupConfig = {
                 "solid-js": "solid-js@1.4.2",
                 "solid-js/web": "solid-js@1.4.2/web",
                 "solid-js/store": "solid-js@1.4.2/store",
+                "wc-spinner":
+                    "pin/wc-spinners@v1.1.1-CKD3xTTv2RDsJ4ymT5yN/mode=imports,min/optimized/wc-spinners.js",
             },
         }),
     ],
