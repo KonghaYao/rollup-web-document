@@ -14,12 +14,12 @@ const fontStore = [
     { label: "默认黑体", value: defaultFont },
     {
         label: "江西拙楷",
-        value: "'江西拙楷2.0'",
+        value: "'jiangxizhuokai'",
         src: "https://fastly.jsdelivr.net/gh/KonghaYao/chinese-free-web-font-storage/build/江西拙楷2.0/result.css",
     },
     {
         label: "霞鹜文楷",
-        value: "LXGWWenKai",
+        value: "'LXGW WenKai'",
         src: "https://fastly.jsdelivr.net/gh/KonghaYao/chinese-free-web-font-storage/build/LXGWWenKai-Regular/result.css",
     },
 ];
